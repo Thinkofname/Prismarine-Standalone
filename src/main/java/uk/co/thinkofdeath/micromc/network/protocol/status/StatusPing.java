@@ -14,11 +14,6 @@ public class StatusPing implements Packet<StatusHandler> {
     }
 
     @Override
-    public void write(MCByteBuf buf) {
-        throw new UnsupportedOperationException();
-    }
-
-    @Override
     public void handle(StatusHandler handler) {
         handler.handle(this);
     }

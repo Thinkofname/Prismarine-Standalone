@@ -30,11 +30,6 @@ public class Handshake implements Packet<HandshakingHandler> {
     }
 
     @Override
-    public void write(MCByteBuf buf) {
-        throw new UnsupportedOperationException();
-    }
-
-    @Override
     public void handle(HandshakingHandler handler) {
         handler.handle(this);
     }

@@ -11,11 +11,6 @@ public class StatusRequest implements Packet<StatusHandler> {
     }
 
     @Override
-    public void write(MCByteBuf buf) {
-
-    }
-
-    @Override
     public void handle(StatusHandler handler) {
         handler.handle(this);
     }

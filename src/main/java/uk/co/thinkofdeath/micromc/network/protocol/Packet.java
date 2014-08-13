@@ -10,11 +10,17 @@ import java.util.Objects;
 
 public interface Packet<H extends PacketHandler> {
 
-    void read(MCByteBuf buf);
+    default void read(MCByteBuf buf) {
+        throw new UnsupportedOperationException();
+    }
 
-    void write(MCByteBuf buf);
+    default void write(MCByteBuf buf) {
+        throw new UnsupportedOperationException();
+    }
 
-    void handle(H handler);
+    default void handle(H handler) {
+        throw new UnsupportedOperationException();
+    }
 
     default String printable() {
         StringBuilder builder = new StringBuilder();

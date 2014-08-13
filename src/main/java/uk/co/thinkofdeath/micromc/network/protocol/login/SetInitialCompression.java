@@ -13,17 +13,7 @@ public class SetInitialCompression implements Packet<NullHandler> {
     }
 
     @Override
-    public void read(MCByteBuf buf) {
-        throw new UnsupportedOperationException();
-    }
-
-    @Override
     public void write(MCByteBuf buf) {
         buf.writeVarInt(threshold);
-    }
-
-    @Override
-    public void handle(NullHandler handler) {
-        throw new UnsupportedOperationException();
     }
 }

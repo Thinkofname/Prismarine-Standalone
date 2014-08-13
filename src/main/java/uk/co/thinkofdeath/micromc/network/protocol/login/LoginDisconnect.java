@@ -15,17 +15,7 @@ public class LoginDisconnect implements Packet<NullHandler> {
     }
 
     @Override
-    public void read(MCByteBuf buf) {
-        throw new UnsupportedOperationException();
-    }
-
-    @Override
     public void write(MCByteBuf buf) {
         buf.writeString(gson.toJson(reason)); // TODO: Chat formatting
-    }
-
-    @Override
-    public void handle(NullHandler handler) {
-        throw new UnsupportedOperationException();
     }
 }

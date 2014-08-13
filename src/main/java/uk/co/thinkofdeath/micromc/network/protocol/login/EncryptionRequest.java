@@ -19,19 +19,9 @@ public class EncryptionRequest implements Packet<NullHandler> {
     }
 
     @Override
-    public void read(MCByteBuf buf) {
-        throw new UnsupportedOperationException();
-    }
-
-    @Override
     public void write(MCByteBuf buf) {
         buf.writeString(serverID);
         buf.writeByteArray(publicKey.getEncoded());
         buf.writeByteArray(verifyToken);
-    }
-
-    @Override
-    public void handle(NullHandler handler) {
-        throw new UnsupportedOperationException();
     }
 }

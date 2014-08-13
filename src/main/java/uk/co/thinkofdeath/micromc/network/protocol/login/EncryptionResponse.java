@@ -16,11 +16,6 @@ public class EncryptionResponse implements Packet<LoginHandler> {
     }
 
     @Override
-    public void write(MCByteBuf buf) {
-        throw new UnsupportedOperationException();
-    }
-
-    @Override
     public void handle(LoginHandler handler) {
         handler.handle(this);
     }

@@ -15,18 +15,8 @@ public class LoginSuccess implements Packet<NullHandler> {
     }
 
     @Override
-    public void read(MCByteBuf buf) {
-        throw new UnsupportedOperationException();
-    }
-
-    @Override
     public void write(MCByteBuf buf) {
         buf.writeString(uuid);
         buf.writeString(username);
-    }
-
-    @Override
-    public void handle(NullHandler handler) {
-        throw new UnsupportedOperationException();
     }
 }
