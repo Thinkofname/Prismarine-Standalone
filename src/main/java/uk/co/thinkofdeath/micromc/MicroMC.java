@@ -10,8 +10,8 @@ import java.util.logging.Logger;
 
 public class MicroMC {
 
-    public static final String MINECRAFT_VERSION = "14w32d";
-    public static final int PROTOCOL_VERSION = 36;
+    public static final String MINECRAFT_VERSION = "14w33a";
+    public static final int PROTOCOL_VERSION = 37;
 
     private static final Logger logger = LogUtil.get(MicroMC.class);
     private final Configuration config;
