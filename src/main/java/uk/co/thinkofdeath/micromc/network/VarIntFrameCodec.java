@@ -31,7 +31,7 @@ public class VarIntFrameCodec extends ByteToMessageCodec<ByteBuf> {
 
             int b = in.readByte();
             val |= (b & 0b01111111) << (bytes++ * 7);
-            if (bytes > 3) { // Smaller limit for packets
+            if (bytes >= 3) { // Smaller limit for packets
                 throw new DecoderException("VarInt too big");
             }
 
