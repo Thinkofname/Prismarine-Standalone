@@ -26,11 +26,4 @@ public class LoginStart implements Packet<LoginHandler> {
     public String getUsername() {
         return username;
     }
-
-    @Override
-    public String toString() {
-        return "LoginStart{" +
-                "username='" + username + '\'' +
-                '}';
-    }
 }

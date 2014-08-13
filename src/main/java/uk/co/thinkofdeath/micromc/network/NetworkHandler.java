@@ -25,13 +25,18 @@ public class NetworkHandler extends SimpleChannelInboundHandler<Packet> {
         this.server = server;
         channel = ch;
         setHandler(handler);
-        ch.closeFuture().addListener(f -> connected = false);
+        ch.closeFuture().addListener(f -> {
+            if (connected) {
+                logger.info("Disconnected(" + channel.remoteAddress() + "): Connection closed");
+            }
+            connected = false;
+        });
     }
 
     @Override
     protected void messageReceived(ChannelHandlerContext ctx, Packet msg) throws Exception {
         if (connected) {
-            logger.info(msg.toString());
+            logger.info(msg.printable());
             msg.handle(handler);
         }
     }

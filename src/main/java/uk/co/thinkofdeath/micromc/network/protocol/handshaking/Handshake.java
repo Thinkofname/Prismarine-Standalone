@@ -54,14 +54,4 @@ public class Handshake implements Packet<HandshakingHandler> {
     public Protocol getNext() {
         return next;
     }
-
-    @Override
-    public String toString() {
-        return "Handshake{" +
-                "protocolVersion=" + protocolVersion +
-                ", address='" + address + '\'' +
-                ", port=" + port +
-                ", next=" + next +
-                '}';
-    }
 }
