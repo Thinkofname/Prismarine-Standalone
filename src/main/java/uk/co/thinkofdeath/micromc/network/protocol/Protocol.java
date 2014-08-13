@@ -2,10 +2,7 @@ package uk.co.thinkofdeath.micromc.network.protocol;
 
 import uk.co.thinkofdeath.micromc.network.protocol.handshaking.Handshake;
 import uk.co.thinkofdeath.micromc.network.protocol.login.*;
-import uk.co.thinkofdeath.micromc.network.protocol.play.JoinGame;
-import uk.co.thinkofdeath.micromc.network.protocol.play.KeepAlivePing;
-import uk.co.thinkofdeath.micromc.network.protocol.play.ServerMessage;
-import uk.co.thinkofdeath.micromc.network.protocol.play.TimeUpdate;
+import uk.co.thinkofdeath.micromc.network.protocol.play.*;
 import uk.co.thinkofdeath.micromc.network.protocol.status.StatusPing;
 import uk.co.thinkofdeath.micromc.network.protocol.status.StatusPong;
 import uk.co.thinkofdeath.micromc.network.protocol.status.StatusReponse;
@@ -25,6 +22,8 @@ public enum Protocol {
         addPacket(ProtocolDirection.CLIENTBOUND, JoinGame.class);
         addPacket(ProtocolDirection.CLIENTBOUND, ServerMessage.class);
         addPacket(ProtocolDirection.CLIENTBOUND, TimeUpdate.class);
+        skip(ProtocolDirection.CLIENTBOUND, 4);
+        addPacket(ProtocolDirection.CLIENTBOUND, PlayerTeleport.class);
     }},
     STATUS(1) {{
         addPacket(ProtocolDirection.SERVERBOUND, StatusRequest.class);

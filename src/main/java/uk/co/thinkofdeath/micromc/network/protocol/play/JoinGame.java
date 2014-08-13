@@ -5,6 +5,7 @@ import uk.co.thinkofdeath.micromc.game.Dimension;
 import uk.co.thinkofdeath.micromc.game.Gamemode;
 import uk.co.thinkofdeath.micromc.network.MCByteBuf;
 import uk.co.thinkofdeath.micromc.network.NullHandler;
+import uk.co.thinkofdeath.micromc.network.PlayHandler;
 import uk.co.thinkofdeath.micromc.network.protocol.Packet;
 
 public class JoinGame implements Packet<NullHandler> {
@@ -33,7 +34,7 @@ public class JoinGame implements Packet<NullHandler> {
 
     @Override
     public void write(MCByteBuf buf) {
-        buf.writeVarInt(entityId);
+        buf.writeInt(entityId);
         buf.writeByte(gamemode.ordinal() | (hardcore ? 0x8 : 0x0));
         buf.writeByte(dimension.getId());
         buf.writeByte(difficulty.ordinal());

@@ -5,6 +5,7 @@ import com.google.gson.Gson;
 import uk.co.thinkofdeath.micromc.log.LogUtil;
 import uk.co.thinkofdeath.micromc.network.login.LoginResponse;
 import uk.co.thinkofdeath.micromc.network.login.Property;
+import uk.co.thinkofdeath.micromc.network.protocol.Protocol;
 import uk.co.thinkofdeath.micromc.network.protocol.login.EncryptionRequest;
 import uk.co.thinkofdeath.micromc.network.protocol.login.EncryptionResponse;
 import uk.co.thinkofdeath.micromc.network.protocol.login.LoginStart;
@@ -139,6 +140,12 @@ public class LoginHandler implements PacketHandler {
                 username
         ));
         logger.info("User " + username + " as logged in with uuid " + uuid);
+
+        handler.getChannel().pipeline().get(PacketCodec.class)
+                .setProtocol(Protocol.PLAY);
+        PlayHandler play = new PlayHandler(username, uuid, properties);
+        handler.setHandler(play);
+        play.join();
     }
 
     private void require(State state) {
