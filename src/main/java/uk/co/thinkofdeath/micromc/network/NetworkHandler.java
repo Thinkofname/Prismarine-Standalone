@@ -36,7 +36,7 @@ public class NetworkHandler extends SimpleChannelInboundHandler<Packet> {
     @Override
     protected void messageReceived(ChannelHandlerContext ctx, Packet msg) throws Exception {
         if (connected) {
-            logger.info(msg.printable());
+            logger.info(msg.asString());
             msg.handle(handler);
         }
     }
