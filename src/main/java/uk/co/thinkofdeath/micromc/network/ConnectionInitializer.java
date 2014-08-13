@@ -3,6 +3,7 @@ package uk.co.thinkofdeath.micromc.network;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelPipeline;
 import io.netty.channel.socket.SocketChannel;
+import io.netty.handler.timeout.ReadTimeoutHandler;
 import uk.co.thinkofdeath.micromc.log.LogUtil;
 import uk.co.thinkofdeath.micromc.network.protocol.Protocol;
 
@@ -22,8 +23,9 @@ public class ConnectionInitializer extends ChannelInitializer<SocketChannel> {
         logger.info("Connection: " + ch.remoteAddress());
 
         ChannelPipeline pipeline = ch.pipeline();
+        pipeline.addLast("timeout", new ReadTimeoutHandler(30));
         pipeline.addLast("frame-codec", new VarIntFrameCodec());
         pipeline.addLast("packet-codec", new PacketCodec(Protocol.HANDSHAKING));
-        pipeline.addLast("handler", new NetworkHandler(ch, new HandshakingHandler()));
+        pipeline.addLast("handler", new NetworkHandler(networkManager.getServer(), ch, new HandshakingHandler()));
     }
 }

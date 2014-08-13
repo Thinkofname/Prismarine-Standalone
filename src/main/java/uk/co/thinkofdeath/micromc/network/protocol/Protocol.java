@@ -1,6 +1,7 @@
 package uk.co.thinkofdeath.micromc.network.protocol;
 
 import uk.co.thinkofdeath.micromc.network.protocol.handshaking.Handshake;
+import uk.co.thinkofdeath.micromc.network.protocol.login.*;
 import uk.co.thinkofdeath.micromc.network.protocol.status.StatusPing;
 import uk.co.thinkofdeath.micromc.network.protocol.status.StatusPong;
 import uk.co.thinkofdeath.micromc.network.protocol.status.StatusReponse;
@@ -24,7 +25,13 @@ public enum Protocol {
         addPacket(ProtocolDirection.CLIENTBOUND, StatusPong.class);
     }},
     LOGIN(2) {{
+        addPacket(ProtocolDirection.SERVERBOUND, LoginStart.class);
+        addPacket(ProtocolDirection.SERVERBOUND, EncryptionResponse.class);
 
+        addPacket(ProtocolDirection.CLIENTBOUND, LoginDisconnect.class);
+        addPacket(ProtocolDirection.CLIENTBOUND, EncryptionRequest.class);
+        addPacket(ProtocolDirection.CLIENTBOUND, LoginSuccess.class);
+        addPacket(ProtocolDirection.CLIENTBOUND, SetInitialCompression.class);
     }};
 
     private final int id;

@@ -1,9 +1,9 @@
 package uk.co.thinkofdeath.micromc.network;
 
 import io.netty.bootstrap.ServerBootstrap;
+import io.netty.buffer.PooledByteBufAllocator;
 import io.netty.channel.Channel;
-import io.netty.channel.ChannelFuture;
-import io.netty.channel.ChannelFutureListener;
+import io.netty.channel.ChannelOption;
 import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
@@ -31,7 +31,10 @@ public class NetworkManager {
         ServerBootstrap bootstrap = new ServerBootstrap();
         bootstrap.group(group)
                 .channel(NioServerSocketChannel.class)
-                .childHandler(new ConnectionInitializer(this));
+                .childHandler(new ConnectionInitializer(this))
+                .option(ChannelOption.ALLOCATOR, PooledByteBufAllocator.DEFAULT)
+                .childOption(ChannelOption.ALLOCATOR, PooledByteBufAllocator.DEFAULT)
+                .childOption(ChannelOption.TCP_NODELAY, true);
 
         channel = bootstrap.bind(address, port)
                 .channel();
@@ -43,5 +46,9 @@ public class NetworkManager {
     public void close() {
         logger.info("Disconnecting players");
         channel.close().awaitUninterruptibly();
+    }
+
+    public MicroMC getServer() {
+        return server;
     }
 }

@@ -17,8 +17,6 @@ public class Main {
         root.addHandler(console);
 
         Configuration config = new Configuration();
-        config.setBindAddress("0.0.0.0");
-        config.setPort(25565);
         MicroMC microMC = new MicroMC(config);
         microMC.start();
 

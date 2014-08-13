@@ -23,14 +23,29 @@ public class MCByteBuf extends ByteBuf {
         this.buf = buf;
     }
 
+    public byte[] readByteArray(int limit) {
+        int size = readVarInt();
+        if (size > limit) {
+            throw new DecoderException("Byte array too large (" + size + " > " + limit + ")");
+        }
+        byte[] data = new byte[size];
+        readBytes(data);
+        return data;
+    }
+
+    public void writeByteArray(byte[] data) {
+        writeVarInt(data.length);
+        writeBytes(data);
+    }
+
     public String readString(int limit) {
         int length = readVarInt();
         if (length > limit * 4) {
-            throw new DecoderException("String too long");
+            throw new DecoderException("String too long (" + length + " > " + limit + " * 4)");
         }
         String str = readBytes(length).toString(StandardCharsets.UTF_8);
         if (str.length() > limit) {
-            throw new DecoderException("String too long");
+            throw new DecoderException("String too long (" + str.length() + " > " + limit + ")");
         }
         return str;
     }
@@ -46,7 +61,7 @@ public class MCByteBuf extends ByteBuf {
         int bytes = 0;
         while (true) {
             int b = readByte();
-            val |= (b & 0x8F) << (bytes++ * 7);
+            val |= (b & 0b01111111) << (bytes++ * 7);
             if (bytes > 5) {
                 throw new DecoderException("VarInt too big");
             }

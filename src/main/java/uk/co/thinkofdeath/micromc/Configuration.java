@@ -2,8 +2,9 @@ package uk.co.thinkofdeath.micromc;
 
 public class Configuration {
 
-    private String bindAddress;
-    private int port;
+    private String bindAddress = "0.0.0.0";
+    private int port = 25565;
+    private boolean onlineMode = true;
 
     public Configuration() {
 
@@ -23,5 +24,13 @@ public class Configuration {
 
     public void setPort(int port) {
         this.port = port;
+    }
+
+    public boolean isOnlineMode() {
+        return onlineMode;
+    }
+
+    public void setOnlineMode(boolean onlineMode) {
+        this.onlineMode = onlineMode;
     }
 }

@@ -30,7 +30,7 @@ public class VarIntFrameCodec extends ByteToMessageCodec<ByteBuf> {
             }
 
             int b = in.readByte();
-            val |= (b & 0x8F) << (bytes++ * 7);
+            val |= (b & 0b01111111) << (bytes++ * 7);
             if (bytes > 3) { // Smaller limit for packets
                 throw new DecoderException("VarInt too big");
             }
@@ -44,6 +44,6 @@ public class VarIntFrameCodec extends ByteToMessageCodec<ByteBuf> {
             in.resetReaderIndex();
             return;
         }
-        out.add(in.readBytes(val));;
+        out.add(in.readBytes(val));
     }
 }

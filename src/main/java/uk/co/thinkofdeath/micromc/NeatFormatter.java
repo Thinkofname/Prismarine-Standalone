@@ -21,7 +21,11 @@ public class NeatFormatter extends Formatter {
         builder.append("][");
         padAndLimit(builder, record.getLevel().getName(), ' ', 5);
         builder.append("][");
-        padAndLimit(builder, record.getLoggerName(), ' ', 10);
+        String name = record.getLoggerName();
+        if (name == null) {
+            name = "AnonLogger";
+        }
+        padAndLimit(builder, name, ' ', 10);
         builder.append("]: ");
         builder.append(formatMessage(record));
         builder.append('\n');

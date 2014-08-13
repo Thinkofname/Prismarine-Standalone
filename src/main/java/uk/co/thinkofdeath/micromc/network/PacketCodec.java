@@ -2,12 +2,14 @@ package uk.co.thinkofdeath.micromc.network;
 
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
+import io.netty.channel.ChannelOption;
 import io.netty.handler.codec.ByteToMessageCodec;
 import uk.co.thinkofdeath.micromc.network.protocol.Packet;
 import uk.co.thinkofdeath.micromc.network.protocol.Protocol;
 import uk.co.thinkofdeath.micromc.network.protocol.ProtocolDirection;
 
 import java.util.List;
+import java.util.logging.Logger;
 
 public class PacketCodec extends ByteToMessageCodec<Packet> {
 
@@ -39,5 +41,9 @@ public class PacketCodec extends ByteToMessageCodec<Packet> {
 
     public void setProtocol(Protocol protocol) {
         this.protocol = protocol;
+    }
+
+    public Protocol getProtocol() {
+        return protocol;
     }
 }
