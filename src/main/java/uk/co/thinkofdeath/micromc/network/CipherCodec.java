@@ -24,7 +24,6 @@ public class CipherCodec extends ByteToMessageCodec<ByteBuf> {
     private byte[] deDataBuffer = new byte[8192];
 
     public CipherCodec(SecretKey secretKey) {
-        super(false);
         try {
             cipherEncrypt = Cipher.getInstance("AES/CFB8/NoPadding");
             cipherEncrypt.init(Cipher.ENCRYPT_MODE, secretKey, new IvParameterSpec(secretKey.getEncoded()));
@@ -69,14 +68,12 @@ public class CipherCodec extends ByteToMessageCodec<ByteBuf> {
     protected void decode(ChannelHandlerContext ctx, ByteBuf in, List<Object> out) throws Exception {
         byte[] data;
         int offset = 0;
-        int dataSize;
+        int dataSize = in.readableBytes();
         if (!in.isDirect()) {
             data = in.array();
             offset = in.arrayOffset();
-            dataSize = in.readableBytes();
             in.skipBytes(in.readableBytes());
         } else {
-            dataSize = in.readableBytes();
             if (deDataBuffer.length < dataSize) {
                 deDataBuffer = new byte[dataSize];
             }
@@ -84,9 +81,9 @@ public class CipherCodec extends ByteToMessageCodec<ByteBuf> {
             data = deDataBuffer;
         }
 
-        int size = cipherEncrypt.getOutputSize(dataSize);
+        int size = cipherDecrypt.getOutputSize(dataSize);
         ByteBuf buf = ctx.alloc().heapBuffer(size);
-        buf.writerIndex(cipherEncrypt.update(data, offset, dataSize, buf.array(), buf.arrayOffset()));
+        buf.writerIndex(cipherDecrypt.update(data, offset, dataSize, buf.array(), buf.arrayOffset()));
         out.add(buf);
     }
 }
