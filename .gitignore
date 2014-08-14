@@ -1,3 +1,6 @@
 .idea
 target
 /test-server
+
+*.iml
+dependency-reduced-pom.xml
