@@ -20,7 +20,7 @@ public class ConnectionInitializer extends ChannelInitializer<SocketChannel> {
 
     @Override
     protected void initChannel(SocketChannel ch) throws Exception {
-        logger.info("Connection: " + ch.remoteAddress());
+        logger.info("Connection(" + ch.remoteAddress() + ")");
 
         ChannelPipeline pipeline = ch.pipeline();
         pipeline.addLast("timeout", new ReadTimeoutHandler(30));
