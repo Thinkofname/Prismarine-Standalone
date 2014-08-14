@@ -52,6 +52,9 @@ class ComponentSerializer implements JsonSerializer<Component>, JsonDeserializer
 
     @Override
     public JsonElement serialize(Component component, Type type, JsonSerializationContext jsonSerializationContext) {
+        if (component instanceof TextComponent && !component.hasFormatting()) {
+            return new JsonPrimitive(((TextComponent) component).getText());
+        }
         JsonObject jsonObject = new JsonObject();
         if (component instanceof TextComponent) {
             jsonObject.addProperty("text", ((TextComponent) component).getText());

@@ -32,7 +32,7 @@ public abstract class Component implements Stringable {
         return bold == null ? parent.getBold() : bold;
     }
 
-    public void setBold(Boolean bold) {
+    public void setBold(boolean bold) {
         this.bold = bold;
     }
 
@@ -40,7 +40,7 @@ public abstract class Component implements Stringable {
         return italic == null ? parent.getItalic() : italic;
     }
 
-    public void setItalic(Boolean italic) {
+    public void setItalic(boolean italic) {
         this.italic = italic;
     }
 
@@ -48,7 +48,7 @@ public abstract class Component implements Stringable {
         return underlined == null ? parent.getUnderlined() : underlined;
     }
 
-    public void setUnderlined(Boolean underlined) {
+    public void setUnderlined(boolean underlined) {
         this.underlined = underlined;
     }
 
@@ -56,7 +56,7 @@ public abstract class Component implements Stringable {
         return strikethrough == null ? parent.getStrikethrough() : strikethrough;
     }
 
-    public void setStrikethrough(Boolean strikethrough) {
+    public void setStrikethrough(boolean strikethrough) {
         this.strikethrough = strikethrough;
     }
 
@@ -64,7 +64,7 @@ public abstract class Component implements Stringable {
         return obfuscated == null ? parent.getObfuscated() : strikethrough;
     }
 
-    public void setObfuscated(Boolean obfuscated) {
+    public void setObfuscated(boolean obfuscated) {
         this.obfuscated = obfuscated;
     }
 
@@ -74,5 +74,14 @@ public abstract class Component implements Stringable {
 
     public void setColor(Color color) {
         this.color = color;
+    }
+
+    public boolean hasFormatting() {
+        return color != null
+                || bold != null
+                || italic != null
+                || underlined != null
+                || strikethrough != null
+                || obfuscated != null;
     }
 }
