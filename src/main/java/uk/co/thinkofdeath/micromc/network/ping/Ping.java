@@ -1,16 +1,18 @@
 package uk.co.thinkofdeath.micromc.network.ping;
 
+import uk.co.thinkofdeath.micromc.chat.Component;
+
 public class Ping {
 
     private final PingVersion version = new PingVersion();
     private final PingPlayers players = new PingPlayers();
-    private String description;
+    private Component description;
 
-    public String getDescription() {
+    public Component getDescription() {
         return description;
     }
 
-    public void setDescription(String description) {
+    public void setDescription(Component description) {
         this.description = description;
     }
 

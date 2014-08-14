@@ -1,6 +1,7 @@
 package uk.co.thinkofdeath.micromc.network;
 
 import uk.co.thinkofdeath.micromc.MicroMC;
+import uk.co.thinkofdeath.micromc.chat.TextComponent;
 import uk.co.thinkofdeath.micromc.network.protocol.Protocol;
 import uk.co.thinkofdeath.micromc.network.protocol.handshaking.Handshake;
 
@@ -21,12 +22,12 @@ public class HandshakingHandler implements PacketHandler {
                 handler.setHandler(new LoginHandler());
 
                 if (handshake.getProtocolVersion() < MicroMC.PROTOCOL_VERSION) {
-                    handler.disconnect("Client out of date. This server is using " + MicroMC.MINECRAFT_VERSION
-                            + " (" + handshake.getProtocolVersion() + ":" + MicroMC.PROTOCOL_VERSION + ")");
+                    handler.disconnect(new TextComponent("Client out of date. This server is using " + MicroMC.MINECRAFT_VERSION
+                            + " (" + handshake.getProtocolVersion() + ":" + MicroMC.PROTOCOL_VERSION + ")"));
                     return;
                 } else if (handshake.getProtocolVersion() > MicroMC.PROTOCOL_VERSION) {
-                    handler.disconnect("Server out of data. This server is using " + MicroMC.MINECRAFT_VERSION
-                            + " (" + handshake.getProtocolVersion() + ":" + MicroMC.PROTOCOL_VERSION + ")");
+                    handler.disconnect(new TextComponent("Server out of data. This server is using " + MicroMC.MINECRAFT_VERSION
+                            + " (" + handshake.getProtocolVersion() + ":" + MicroMC.PROTOCOL_VERSION + ")"));
                     return;
                 }
                 break;

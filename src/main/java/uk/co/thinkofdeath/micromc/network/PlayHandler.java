@@ -1,6 +1,7 @@
 package uk.co.thinkofdeath.micromc.network;
 
 import io.netty.util.concurrent.ScheduledFuture;
+import uk.co.thinkofdeath.micromc.chat.TextComponent;
 import uk.co.thinkofdeath.micromc.game.Difficulty;
 import uk.co.thinkofdeath.micromc.game.Dimension;
 import uk.co.thinkofdeath.micromc.game.Gamemode;
@@ -36,7 +37,7 @@ public class PlayHandler implements PacketHandler {
 
     public void handle(KeepAlivePong keepAlivePong) {
         if (lastPingId != keepAlivePong.getId()) {
-            handler.disconnect("Incorrect Keep Alive");
+            handler.disconnect(new TextComponent("Incorrect Keep Alive"));
         }
     }
 

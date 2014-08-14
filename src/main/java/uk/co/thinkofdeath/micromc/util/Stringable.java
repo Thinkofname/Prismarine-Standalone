@@ -11,14 +11,27 @@ public interface Stringable {
         StringBuilder builder = new StringBuilder();
         builder.append(getClass().getSimpleName());
         builder.append("{");
-        for (Field field : getClass().getDeclaredFields()) {
+        StringHelper.appendFields(builder, this, getClass());
+        if (builder.charAt(builder.length() - 1) == ',') {
+            builder.deleteCharAt(builder.length() - 1);
+        }
+        builder.append("}");
+        return builder.toString();
+    }
+
+}
+
+class StringHelper {
+
+    public static void appendFields(StringBuilder builder, Object instance, Class<?> clazz) {
+        for (Field field : clazz.getDeclaredFields()) {
             if ((field.getModifiers() & Modifier.STATIC) != 0) {
                 continue;
             }
             field.setAccessible(true);
             String print;
             try {
-                Object value = field.get(this);
+                Object value = field.get(instance);
                 if (value == null) {
                     print = "null";
                 } else if (value.getClass().isArray()) {
@@ -43,6 +56,8 @@ public interface Stringable {
                     }
                 } else if (value instanceof String) {
                     print = "\"" + value + "\"";
+                } else if (value instanceof Stringable) {
+                    print = ((Stringable) value).asString();
                 } else {
                     print = Objects.toString(value);
                 }
@@ -55,10 +70,8 @@ public interface Stringable {
                     .append(print)
                     .append(",");
         }
-        if (builder.charAt(builder.length() - 1) == ',') {
-            builder.deleteCharAt(builder.length() - 1);
+        if (!clazz.getSuperclass().equals(Object.class)) {
+            appendFields(builder, instance, clazz.getSuperclass());
         }
-        builder.append("}");
-        return builder.toString();
     }
 }

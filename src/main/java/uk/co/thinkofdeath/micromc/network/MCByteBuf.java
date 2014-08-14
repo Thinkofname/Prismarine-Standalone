@@ -4,6 +4,8 @@ import io.netty.buffer.ByteBuf;
 import io.netty.buffer.ByteBufAllocator;
 import io.netty.buffer.ByteBufProcessor;
 import io.netty.handler.codec.DecoderException;
+import uk.co.thinkofdeath.micromc.chat.ChatSerializer;
+import uk.co.thinkofdeath.micromc.chat.Component;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -21,6 +23,14 @@ public class MCByteBuf extends ByteBuf {
 
     public MCByteBuf(ByteBuf buf) {
         this.buf = buf;
+    }
+
+    public Component readChat() {
+        return ChatSerializer.fromString(readString(Short.MAX_VALUE));
+    }
+
+    public void writeChat(Component component) {
+        writeString(ChatSerializer.toString(component));
     }
 
     public byte[] readByteArray(int limit) {

@@ -1,6 +1,9 @@
 package uk.co.thinkofdeath.micromc.network;
 
 import uk.co.thinkofdeath.micromc.MicroMC;
+import uk.co.thinkofdeath.micromc.chat.Color;
+import uk.co.thinkofdeath.micromc.chat.Component;
+import uk.co.thinkofdeath.micromc.chat.TextComponent;
 import uk.co.thinkofdeath.micromc.network.ping.Ping;
 import uk.co.thinkofdeath.micromc.network.protocol.status.StatusPing;
 import uk.co.thinkofdeath.micromc.network.protocol.status.StatusPong;
@@ -21,7 +24,12 @@ public class StatusHandler implements PacketHandler {
         require(State.WAITING_REQUEST);
 
         Ping ping = new Ping();
-        ping.setDescription("Hello world");
+        Component motd = new TextComponent("Hello ");
+        motd.setColor(Color.GREEN);
+        Component world = new TextComponent("world");
+        world.setColor(Color.BLUE);
+        motd.addComponent(world);
+        ping.setDescription(motd);
         ping.getVersion().setName("MicroMC - " + MicroMC.MINECRAFT_VERSION);
         ping.getVersion().setProtocol(MicroMC.PROTOCOL_VERSION);
         ping.getPlayers().setMax(20);

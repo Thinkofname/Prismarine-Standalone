@@ -5,6 +5,8 @@ import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 import io.netty.channel.socket.SocketChannel;
 import uk.co.thinkofdeath.micromc.MicroMC;
+import uk.co.thinkofdeath.micromc.chat.Component;
+import uk.co.thinkofdeath.micromc.chat.TextComponent;
 import uk.co.thinkofdeath.micromc.log.LogUtil;
 import uk.co.thinkofdeath.micromc.network.protocol.Packet;
 import uk.co.thinkofdeath.micromc.network.protocol.Protocol;
@@ -44,7 +46,7 @@ public class NetworkHandler extends SimpleChannelInboundHandler<Packet> {
     @Override
     public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
         cause.printStackTrace();
-        disconnect(cause.getMessage());
+        disconnect(new TextComponent(cause.getMessage()));
     }
 
     @Override
@@ -61,8 +63,8 @@ public class NetworkHandler extends SimpleChannelInboundHandler<Packet> {
         channel.pipeline().addBefore("frame-codec", "cipher-codec", new CipherCodec(secretKey));
     }
 
-    public void disconnect(String reason) { // TODO: Chat format
-        logger.info("Disconnected(" + channel.remoteAddress() + "): " + reason);
+    public void disconnect(Component reason) {
+        logger.info("Disconnected(" + channel.remoteAddress() + "): " + reason.asString());
         Packet packet;
         if (channel.pipeline().get(PacketCodec.class).getProtocol() == Protocol.LOGIN) {
             packet = new LoginDisconnect(reason);

@@ -1,24 +1,23 @@
 package uk.co.thinkofdeath.micromc.network.protocol.play;
 
-import com.google.gson.Gson;
+import uk.co.thinkofdeath.micromc.chat.Component;
 import uk.co.thinkofdeath.micromc.network.MCByteBuf;
 import uk.co.thinkofdeath.micromc.network.NullHandler;
 import uk.co.thinkofdeath.micromc.network.protocol.Packet;
 
 public class ServerMessage implements Packet<NullHandler> {
 
-    private static final Gson gson = new Gson();
-    private String message; // TODO: Chat format
+    private Component message;
     private Type type;
 
-    public ServerMessage(String message, Type type) {
+    public ServerMessage(Component message, Type type) {
         this.message = message;
         this.type = type;
     }
 
     @Override
     public void write(MCByteBuf buf) {
-        buf.writeString(message);
+        buf.writeChat(message);
         buf.writeByte(type.ordinal());
     }
 

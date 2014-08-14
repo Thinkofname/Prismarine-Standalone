@@ -2,6 +2,9 @@ package uk.co.thinkofdeath.micromc.network;
 
 import com.google.common.io.Resources;
 import com.google.gson.Gson;
+import uk.co.thinkofdeath.micromc.chat.Color;
+import uk.co.thinkofdeath.micromc.chat.Component;
+import uk.co.thinkofdeath.micromc.chat.TextComponent;
 import uk.co.thinkofdeath.micromc.log.LogUtil;
 import uk.co.thinkofdeath.micromc.network.login.LoginResponse;
 import uk.co.thinkofdeath.micromc.network.login.Property;
@@ -48,7 +51,7 @@ public class LoginHandler implements PacketHandler {
             try {
                 SecureRandom.getInstanceStrong().nextBytes(verifyToken);
             } catch (NoSuchAlgorithmException e) {
-                handler.disconnect(e.getMessage());
+                handler.disconnect(new TextComponent(e.getMessage()));
             }
             handler.sendPacket(new EncryptionRequest(
                     serverId,
@@ -68,11 +71,11 @@ public class LoginHandler implements PacketHandler {
         try {
             response = tryAuth(encryptionResponse);
             if (response == null) {
-                handler.disconnect("Failed to verify username against the session servers");
+                handler.disconnect(new TextComponent("Failed to verify username against the session servers"));
                 return;
             }
         } catch (IOException e) {
-            handler.disconnect(e.getMessage());
+            handler.disconnect(new TextComponent(e.getMessage()));
             return;
         }
 
@@ -93,7 +96,7 @@ public class LoginHandler implements PacketHandler {
             byte[] secretKeyBytes = decrypt(encryptionResponse.getSecretKey());
 
             if (!Arrays.equals(testKey, verifyToken)) {
-                handler.disconnect("Verify token incorrect");
+                handler.disconnect(new TextComponent("Verify token incorrect"));
             }
 
             SecretKey secretKey = new SecretKeySpec(secretKeyBytes, "AES");
@@ -107,10 +110,9 @@ public class LoginHandler implements PacketHandler {
             URL url = new URL("https://sessionserver.mojang.com/session/minecraft/hasJoined?" +
                     "username=" + username
                     + "&serverId=" + new BigInteger(digest.digest()).toString(16));
-            LoginResponse response = gson.fromJson(
+            return gson.fromJson(
                     Resources.asCharSource(url, StandardCharsets.UTF_8).openBufferedStream(),
                     LoginResponse.class);
-            return response;
         } catch (NoSuchAlgorithmException
                 | NoSuchPaddingException
                 | InvalidKeyException
