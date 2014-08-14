@@ -11,6 +11,7 @@ import uk.co.thinkofdeath.micromc.log.LogUtil;
 import uk.co.thinkofdeath.micromc.network.protocol.Packet;
 import uk.co.thinkofdeath.micromc.network.protocol.Protocol;
 import uk.co.thinkofdeath.micromc.network.protocol.login.LoginDisconnect;
+import uk.co.thinkofdeath.micromc.network.protocol.login.SetInitialCompression;
 
 import javax.crypto.SecretKey;
 import java.util.logging.Logger;
@@ -61,6 +62,23 @@ public class NetworkHandler extends SimpleChannelInboundHandler<Packet> {
 
     public void enableEncryption(SecretKey secretKey) {
         channel.pipeline().addBefore("frame-codec", "cipher-codec", new CipherCodec(secretKey));
+    }
+
+    public void enableCompression(int threshold) {
+        if (channel.pipeline().get(PacketCodec.class).getProtocol() == Protocol.LOGIN) {
+            sendPacket(new SetInitialCompression(threshold));
+        } else if (channel.pipeline().get(PacketCodec.class).getProtocol() == Protocol.PLAY) {
+            // TODO
+        } else {
+            throw new UnsupportedOperationException();
+        }
+
+        CompressionCodec codec = channel.pipeline().get(CompressionCodec.class);
+        if (codec == null) {
+            codec = new CompressionCodec();
+            channel.pipeline().addAfter("frame-codec", "compression-codec", codec);
+        }
+        codec.setThreshold(threshold);
     }
 
     public void disconnect(Component reason) {

@@ -136,6 +136,7 @@ public class LoginHandler implements PacketHandler {
         if (properties == null) {
             properties = new Property[0];
         }
+        handler.enableCompression(256);
 
         handler.sendPacket(new LoginSuccess(
                 uuid.toString(),
