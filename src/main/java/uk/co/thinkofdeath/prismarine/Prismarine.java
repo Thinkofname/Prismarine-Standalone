@@ -10,8 +10,8 @@ import java.util.logging.Logger;
 
 public class Prismarine {
 
-    public static final String MINECRAFT_VERSION = "14w33b";
-    public static final int PROTOCOL_VERSION = 38;
+    public static final String MINECRAFT_VERSION = "14w33c";
+    public static final int PROTOCOL_VERSION = 39;
 
     private static final Logger logger = LogUtil.get(Prismarine.class);
     private final Configuration config;

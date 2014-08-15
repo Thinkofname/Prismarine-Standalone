@@ -10,7 +10,7 @@ public class KeepAlivePong implements Packet<PlayHandler> {
 
     @Override
     public void read(MCByteBuf buf) {
-
+        id = buf.readVarInt();
     }
 
     @Override

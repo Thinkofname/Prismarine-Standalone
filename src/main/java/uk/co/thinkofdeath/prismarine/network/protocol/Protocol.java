@@ -16,7 +16,7 @@ public enum Protocol {
         addPacket(ProtocolDirection.SERVERBOUND, Handshake.class);
     }},
     PLAY(0) {{
-
+        addPacket(ProtocolDirection.SERVERBOUND, KeepAlivePong.class);
 
         addPacket(ProtocolDirection.CLIENTBOUND, KeepAlivePing.class);
         addPacket(ProtocolDirection.CLIENTBOUND, JoinGame.class);
