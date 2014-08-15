@@ -2,7 +2,7 @@ apply plugin: 'java'
 apply plugin: 'application'
 
 sourceCompatibility = 1.8
-mainClassName = "uk.co.thinkofdeath.micromc.Main"
+mainClassName = "uk.co.thinkofdeath.prismarine.Main"
 
 repositories {
     mavenCentral()

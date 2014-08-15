@@ -1,4 +1,4 @@
-MicroMC
+Prismarine
 ========
 
 A small minecraft server that aims to do the minimum required 

@@ -10,8 +10,8 @@ import java.util.logging.Logger;
 
 public class Prismarine {
 
-    public static final String MINECRAFT_VERSION = "14w33a";
-    public static final int PROTOCOL_VERSION = 37;
+    public static final String MINECRAFT_VERSION = "14w33b";
+    public static final int PROTOCOL_VERSION = 38;
 
     private static final Logger logger = LogUtil.get(Prismarine.class);
     private final Configuration config;
@@ -20,7 +20,7 @@ public class Prismarine {
 
     public Prismarine(Configuration config) {
         this.config = config;
-        logger.info("Starting MicroMC");
+        logger.info("Starting Prismarine");
 
         if (isOnlineMode()) {
             logger.info("Generating encryption keys");
