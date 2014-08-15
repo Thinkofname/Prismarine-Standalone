@@ -1,6 +1,5 @@
 .idea
-target
+/build
 /test-server
 
 *.iml
-dependency-reduced-pom.xml
