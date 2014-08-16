@@ -1,4 +1,4 @@
-package uk.co.thinkofdeath.prismarine;
+package uk.co.thinkofdeath.prismarine.server;
 
 public class Configuration {
 

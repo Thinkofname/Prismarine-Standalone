@@ -1,6 +1,6 @@
 package uk.co.thinkofdeath.prismarine.network;
 
-import uk.co.thinkofdeath.prismarine.Prismarine;
+import uk.co.thinkofdeath.prismarine.server.PrismarineServer;
 import uk.co.thinkofdeath.prismarine.chat.TextComponent;
 import uk.co.thinkofdeath.prismarine.network.protocol.Protocol;
 import uk.co.thinkofdeath.prismarine.network.protocol.handshaking.Handshake;
@@ -21,13 +21,13 @@ public class HandshakingHandler implements PacketHandler {
                         .setProtocol(Protocol.LOGIN);
                 handler.setHandler(new LoginHandler());
 
-                if (handshake.getProtocolVersion() < Prismarine.PROTOCOL_VERSION) {
-                    handler.disconnect(new TextComponent("Client out of date. This server is using " + Prismarine.MINECRAFT_VERSION
-                            + " (" + handshake.getProtocolVersion() + ":" + Prismarine.PROTOCOL_VERSION + ")"));
+                if (handshake.getProtocolVersion() < PrismarineServer.PROTOCOL_VERSION) {
+                    handler.disconnect(new TextComponent("Client out of date. This server is using " + PrismarineServer.MINECRAFT_VERSION
+                            + " (" + handshake.getProtocolVersion() + ":" + PrismarineServer.PROTOCOL_VERSION + ")"));
                     return;
-                } else if (handshake.getProtocolVersion() > Prismarine.PROTOCOL_VERSION) {
-                    handler.disconnect(new TextComponent("Server out of data. This server is using " + Prismarine.MINECRAFT_VERSION
-                            + " (" + handshake.getProtocolVersion() + ":" + Prismarine.PROTOCOL_VERSION + ")"));
+                } else if (handshake.getProtocolVersion() > PrismarineServer.PROTOCOL_VERSION) {
+                    handler.disconnect(new TextComponent("Server out of data. This server is using " + PrismarineServer.MINECRAFT_VERSION
+                            + " (" + handshake.getProtocolVersion() + ":" + PrismarineServer.PROTOCOL_VERSION + ")"));
                     return;
                 }
                 break;

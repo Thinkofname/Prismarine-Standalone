@@ -1,4 +1,4 @@
-package uk.co.thinkofdeath.prismarine;
+package uk.co.thinkofdeath.prismarine.server;
 
 import uk.co.thinkofdeath.prismarine.log.LogUtil;
 import uk.co.thinkofdeath.prismarine.network.NetworkManager;
@@ -8,17 +8,17 @@ import java.security.KeyPairGenerator;
 import java.security.NoSuchAlgorithmException;
 import java.util.logging.Logger;
 
-public class Prismarine {
+public class PrismarineServer {
 
     public static final String MINECRAFT_VERSION = "14w33c";
     public static final int PROTOCOL_VERSION = 39;
 
-    private static final Logger logger = LogUtil.get(Prismarine.class);
+    private static final Logger logger = LogUtil.get(PrismarineServer.class);
     private final Configuration config;
     private NetworkManager networkManager = new NetworkManager(this);
     private KeyPair networkKeyPair;
 
-    public Prismarine(Configuration config) {
+    public PrismarineServer(Configuration config) {
         this.config = config;
         logger.info("Starting Prismarine");
 

@@ -7,7 +7,7 @@ import io.netty.channel.ChannelOption;
 import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
-import uk.co.thinkofdeath.prismarine.Prismarine;
+import uk.co.thinkofdeath.prismarine.server.PrismarineServer;
 import uk.co.thinkofdeath.prismarine.log.LogUtil;
 
 import java.util.logging.Level;
@@ -16,10 +16,10 @@ import java.util.logging.Logger;
 public class NetworkManager {
 
     private static final Logger logger = LogUtil.get(NetworkManager.class);
-    private final Prismarine server;
+    private final PrismarineServer server;
     private Channel channel;
 
-    public NetworkManager(Prismarine server) {
+    public NetworkManager(PrismarineServer server) {
         this.server = server;
     }
 
@@ -48,7 +48,7 @@ public class NetworkManager {
         channel.close().awaitUninterruptibly();
     }
 
-    public Prismarine getServer() {
+    public PrismarineServer getServer() {
         return server;
     }
 }

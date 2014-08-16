@@ -1,8 +1,6 @@
 package uk.co.thinkofdeath.prismarine.server;
 
-import uk.co.thinkofdeath.prismarine.Configuration;
 import uk.co.thinkofdeath.prismarine.NeatFormatter;
-import uk.co.thinkofdeath.prismarine.Prismarine;
 
 import java.util.Scanner;
 import java.util.logging.ConsoleHandler;
@@ -21,7 +19,7 @@ public class Main {
         root.addHandler(console);
 
         Configuration config = new Configuration();
-        Prismarine prismarine = new Prismarine(config);
+        PrismarineServer prismarine = new PrismarineServer(config);
         prismarine.start();
 
         Scanner scanner = new Scanner(System.in);

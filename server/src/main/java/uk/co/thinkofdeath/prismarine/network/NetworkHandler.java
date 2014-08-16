@@ -4,7 +4,7 @@ import io.netty.channel.ChannelFutureListener;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 import io.netty.channel.socket.SocketChannel;
-import uk.co.thinkofdeath.prismarine.Prismarine;
+import uk.co.thinkofdeath.prismarine.server.PrismarineServer;
 import uk.co.thinkofdeath.prismarine.chat.Component;
 import uk.co.thinkofdeath.prismarine.chat.TextComponent;
 import uk.co.thinkofdeath.prismarine.log.LogUtil;
@@ -19,12 +19,12 @@ import java.util.logging.Logger;
 public class NetworkHandler extends SimpleChannelInboundHandler<Packet> {
 
     private static final Logger logger = LogUtil.get(NetworkHandler.class);
-    private final Prismarine server;
+    private final PrismarineServer server;
     private final SocketChannel channel;
     private PacketHandler handler;
     private boolean connected = true;
 
-    public NetworkHandler(Prismarine server, SocketChannel ch, PacketHandler handler) {
+    public NetworkHandler(PrismarineServer server, SocketChannel ch, PacketHandler handler) {
         this.server = server;
         channel = ch;
         setHandler(handler);
@@ -105,7 +105,7 @@ public class NetworkHandler extends SimpleChannelInboundHandler<Packet> {
         return channel;
     }
 
-    public Prismarine getServer() {
+    public PrismarineServer getServer() {
         return server;
     }
 }
