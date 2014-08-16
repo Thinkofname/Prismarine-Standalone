@@ -1,6 +1,5 @@
 package uk.co.thinkofdeath.prismarine.network;
 
-import uk.co.thinkofdeath.prismarine.server.PrismarineServer;
 import uk.co.thinkofdeath.prismarine.chat.Color;
 import uk.co.thinkofdeath.prismarine.chat.Component;
 import uk.co.thinkofdeath.prismarine.chat.TextComponent;
@@ -9,6 +8,7 @@ import uk.co.thinkofdeath.prismarine.network.protocol.status.StatusPing;
 import uk.co.thinkofdeath.prismarine.network.protocol.status.StatusPong;
 import uk.co.thinkofdeath.prismarine.network.protocol.status.StatusReponse;
 import uk.co.thinkofdeath.prismarine.network.protocol.status.StatusRequest;
+import uk.co.thinkofdeath.prismarine.server.PrismarineServer;
 
 public class StatusHandler implements PacketHandler {
 

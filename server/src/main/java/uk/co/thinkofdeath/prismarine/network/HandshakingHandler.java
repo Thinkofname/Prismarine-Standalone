@@ -1,9 +1,9 @@
 package uk.co.thinkofdeath.prismarine.network;
 
-import uk.co.thinkofdeath.prismarine.server.PrismarineServer;
 import uk.co.thinkofdeath.prismarine.chat.TextComponent;
 import uk.co.thinkofdeath.prismarine.network.protocol.Protocol;
 import uk.co.thinkofdeath.prismarine.network.protocol.handshaking.Handshake;
+import uk.co.thinkofdeath.prismarine.server.PrismarineServer;
 
 public class HandshakingHandler implements PacketHandler {
 

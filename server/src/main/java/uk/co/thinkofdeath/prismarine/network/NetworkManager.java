@@ -7,8 +7,8 @@ import io.netty.channel.ChannelOption;
 import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
-import uk.co.thinkofdeath.prismarine.server.PrismarineServer;
 import uk.co.thinkofdeath.prismarine.log.LogUtil;
+import uk.co.thinkofdeath.prismarine.server.PrismarineServer;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;

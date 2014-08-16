@@ -12,7 +12,7 @@ public class CompressionCodec extends ByteToMessageCodec<ByteBuf> {
 
     private int threshold;
 
-    private ThreadLocal<CompressionInfo> info = new ThreadLocal<CompressionInfo>(){
+    private ThreadLocal<CompressionInfo> info = new ThreadLocal<CompressionInfo>() {
 
         @Override
         protected CompressionInfo initialValue() {

@@ -4,7 +4,6 @@ import io.netty.channel.ChannelFutureListener;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 import io.netty.channel.socket.SocketChannel;
-import uk.co.thinkofdeath.prismarine.server.PrismarineServer;
 import uk.co.thinkofdeath.prismarine.chat.Component;
 import uk.co.thinkofdeath.prismarine.chat.TextComponent;
 import uk.co.thinkofdeath.prismarine.log.LogUtil;
@@ -12,6 +11,7 @@ import uk.co.thinkofdeath.prismarine.network.protocol.Packet;
 import uk.co.thinkofdeath.prismarine.network.protocol.Protocol;
 import uk.co.thinkofdeath.prismarine.network.protocol.login.LoginDisconnect;
 import uk.co.thinkofdeath.prismarine.network.protocol.login.SetInitialCompression;
+import uk.co.thinkofdeath.prismarine.server.PrismarineServer;
 
 import javax.crypto.SecretKey;
 import java.util.logging.Logger;
