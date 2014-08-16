@@ -1,13 +1,18 @@
-package uk.co.thinkofdeath.prismarine.network;
+package uk.co.thinkofdeath.prismarine.server.net;
 
 import uk.co.thinkofdeath.prismarine.chat.TextComponent;
+import uk.co.thinkofdeath.prismarine.network.Constants;
+import uk.co.thinkofdeath.prismarine.network.NetworkHandler;
+import uk.co.thinkofdeath.prismarine.network.PacketCodec;
+import uk.co.thinkofdeath.prismarine.network.protocol.IHandshakingHandlerServerbound;
 import uk.co.thinkofdeath.prismarine.network.protocol.Protocol;
 import uk.co.thinkofdeath.prismarine.network.protocol.handshaking.Handshake;
 
-public class HandshakingHandler implements PacketHandler {
+public class HandshakingHandler implements IHandshakingHandlerServerbound {
 
     private NetworkHandler handler;
 
+    @Override
     public void handle(Handshake handshake) {
         switch (handshake.getNext()) {
             case STATUS:

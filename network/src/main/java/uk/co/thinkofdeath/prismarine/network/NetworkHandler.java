@@ -8,6 +8,7 @@ import uk.co.thinkofdeath.prismarine.chat.Component;
 import uk.co.thinkofdeath.prismarine.chat.TextComponent;
 import uk.co.thinkofdeath.prismarine.log.LogUtil;
 import uk.co.thinkofdeath.prismarine.network.protocol.Packet;
+import uk.co.thinkofdeath.prismarine.network.protocol.PacketHandler;
 import uk.co.thinkofdeath.prismarine.network.protocol.Protocol;
 import uk.co.thinkofdeath.prismarine.network.protocol.login.LoginDisconnect;
 import uk.co.thinkofdeath.prismarine.network.protocol.login.SetInitialCompression;

@@ -1,11 +1,14 @@
-package uk.co.thinkofdeath.prismarine.network;
+package uk.co.thinkofdeath.prismarine.server.net;
 
 import com.google.common.io.Resources;
 import com.google.gson.Gson;
 import uk.co.thinkofdeath.prismarine.chat.TextComponent;
 import uk.co.thinkofdeath.prismarine.log.LogUtil;
+import uk.co.thinkofdeath.prismarine.network.NetworkHandler;
+import uk.co.thinkofdeath.prismarine.network.PacketCodec;
 import uk.co.thinkofdeath.prismarine.network.login.LoginResponse;
 import uk.co.thinkofdeath.prismarine.network.login.Property;
+import uk.co.thinkofdeath.prismarine.network.protocol.ILoginHandlerServerbound;
 import uk.co.thinkofdeath.prismarine.network.protocol.Protocol;
 import uk.co.thinkofdeath.prismarine.network.protocol.login.EncryptionRequest;
 import uk.co.thinkofdeath.prismarine.network.protocol.login.EncryptionResponse;
@@ -23,7 +26,7 @@ import java.util.Arrays;
 import java.util.UUID;
 import java.util.logging.Logger;
 
-public class LoginHandler implements PacketHandler {
+public class LoginHandler implements ILoginHandlerServerbound {
 
     private static final Gson gson = new Gson();
     private static final Logger logger = LogUtil.get(LoginHandler.class);
@@ -40,6 +43,7 @@ public class LoginHandler implements PacketHandler {
         this.handler = handler;
     }
 
+    @Override
     public void handle(LoginStart loginStart) {
         require(State.START);
         username = loginStart.getUsername();
@@ -62,6 +66,7 @@ public class LoginHandler implements PacketHandler {
         }
     }
 
+    @Override
     public void handle(EncryptionResponse encryptionResponse) {
         require(State.WAITING_RESPONSE);
 

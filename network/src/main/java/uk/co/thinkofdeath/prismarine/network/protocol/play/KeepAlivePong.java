@@ -1,12 +1,19 @@
 package uk.co.thinkofdeath.prismarine.network.protocol.play;
 
 import uk.co.thinkofdeath.prismarine.network.MCByteBuf;
-import uk.co.thinkofdeath.prismarine.network.PlayHandler;
+import uk.co.thinkofdeath.prismarine.network.protocol.IPlayHandlerServerbound;
 import uk.co.thinkofdeath.prismarine.network.protocol.Packet;
 
-public class KeepAlivePong implements Packet<PlayHandler> {
+public class KeepAlivePong implements Packet<IPlayHandlerServerbound> {
 
     private int id;
+
+    public KeepAlivePong() {
+    }
+
+    public KeepAlivePong(int id) {
+        this.id = id;
+    }
 
     @Override
     public void read(MCByteBuf buf) {
@@ -14,7 +21,12 @@ public class KeepAlivePong implements Packet<PlayHandler> {
     }
 
     @Override
-    public void handle(PlayHandler handler) {
+    public void write(MCByteBuf buf) {
+        buf.writeVarInt(id);
+    }
+
+    @Override
+    public void handle(IPlayHandlerServerbound handler) {
         handler.handle(this);
     }
 

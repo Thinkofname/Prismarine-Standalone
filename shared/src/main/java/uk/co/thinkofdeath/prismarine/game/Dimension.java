@@ -14,4 +14,13 @@ public enum Dimension {
     public int getId() {
         return id;
     }
+
+    public static Dimension byId(byte b) {
+        for (Dimension dimension : values()) {
+            if (dimension.getId() == b) {
+                return dimension;
+            }
+        }
+        return null;
+    }
 }

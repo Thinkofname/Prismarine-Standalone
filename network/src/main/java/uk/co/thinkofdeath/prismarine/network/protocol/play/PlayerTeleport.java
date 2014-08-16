@@ -1,10 +1,10 @@
 package uk.co.thinkofdeath.prismarine.network.protocol.play;
 
 import uk.co.thinkofdeath.prismarine.network.MCByteBuf;
-import uk.co.thinkofdeath.prismarine.network.NullHandler;
+import uk.co.thinkofdeath.prismarine.network.protocol.IPlayHandlerClientbound;
 import uk.co.thinkofdeath.prismarine.network.protocol.Packet;
 
-public class PlayerTeleport implements Packet<NullHandler> {
+public class PlayerTeleport implements Packet<IPlayHandlerClientbound> {
 
     private double x;
     private double y;
@@ -12,6 +12,9 @@ public class PlayerTeleport implements Packet<NullHandler> {
     private float yaw;
     private float pitch;
     private int flags;
+
+    public PlayerTeleport() {
+    }
 
     public PlayerTeleport(double x, double y, double z, float yaw, float pitch, int flags) {
         this.x = x;
@@ -23,6 +26,16 @@ public class PlayerTeleport implements Packet<NullHandler> {
     }
 
     @Override
+    public void read(MCByteBuf buf) {
+        x = buf.readDouble();
+        y = buf.readDouble();
+        z = buf.readDouble();
+        yaw = buf.readFloat();
+        pitch = buf.readFloat();
+        flags = buf.readUnsignedByte();
+    }
+
+    @Override
     public void write(MCByteBuf buf) {
         buf.writeDouble(x);
         buf.writeDouble(y);
@@ -30,5 +43,10 @@ public class PlayerTeleport implements Packet<NullHandler> {
         buf.writeFloat(yaw);
         buf.writeFloat(pitch);
         buf.writeByte(flags);
+    }
+
+    @Override
+    public void handle(IPlayHandlerClientbound handler) {
+        handler.handle(this);
     }
 }

@@ -8,6 +8,8 @@ import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
 import uk.co.thinkofdeath.prismarine.log.LogUtil;
+import uk.co.thinkofdeath.prismarine.network.protocol.PacketHandler;
+import uk.co.thinkofdeath.prismarine.network.protocol.ProtocolDirection;
 
 import java.security.KeyPair;
 import java.security.KeyPairGenerator;
@@ -22,12 +24,13 @@ public class NetworkManager {
 
     private boolean onlineMode = true;
     private KeyPair networkKeyPair;
+    private ProtocolDirection incomingPacketType;
 
     public NetworkManager() {
     }
 
-    public void listen(String address, int port) {
-
+    public void listen(String address, int port, Class<? extends PacketHandler> initialHandler) {
+        incomingPacketType = ProtocolDirection.SERVERBOUND;
         if (isOnlineMode()) {
             logger.info("Generating encryption keys");
             try {
@@ -48,7 +51,7 @@ public class NetworkManager {
         bootstrap.group(group)
                 .channel(NioServerSocketChannel.class)
                 .option(ChannelOption.ALLOCATOR, PooledByteBufAllocator.DEFAULT)
-                .childHandler(new ConnectionInitializer(this))
+                .childHandler(new ConnectionInitializer(this, initialHandler))
                 .childOption(ChannelOption.ALLOCATOR, PooledByteBufAllocator.DEFAULT)
                 .childOption(ChannelOption.TCP_NODELAY, true);
 
@@ -74,5 +77,9 @@ public class NetworkManager {
 
     public KeyPair getNetworkKeyPair() {
         return networkKeyPair;
+    }
+
+    public ProtocolDirection getIncomingPacketType() {
+        return incomingPacketType;
     }
 }

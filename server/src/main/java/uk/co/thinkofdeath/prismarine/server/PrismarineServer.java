@@ -2,8 +2,8 @@ package uk.co.thinkofdeath.prismarine.server;
 
 import uk.co.thinkofdeath.prismarine.log.LogUtil;
 import uk.co.thinkofdeath.prismarine.network.NetworkManager;
+import uk.co.thinkofdeath.prismarine.server.net.HandshakingHandler;
 
-import java.security.KeyPair;
 import java.util.logging.Logger;
 
 public class PrismarineServer {
@@ -18,7 +18,7 @@ public class PrismarineServer {
     }
 
     public void start() {
-        networkManager.listen(config.getBindAddress(), config.getPort());
+        networkManager.listen(config.getBindAddress(), config.getPort(), HandshakingHandler.class);
     }
 
     public void close() {

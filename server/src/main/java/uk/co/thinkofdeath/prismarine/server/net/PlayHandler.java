@@ -1,4 +1,4 @@
-package uk.co.thinkofdeath.prismarine.network;
+package uk.co.thinkofdeath.prismarine.server.net;
 
 import io.netty.util.concurrent.ScheduledFuture;
 import uk.co.thinkofdeath.prismarine.chat.TextComponent;
@@ -6,7 +6,9 @@ import uk.co.thinkofdeath.prismarine.game.Difficulty;
 import uk.co.thinkofdeath.prismarine.game.Dimension;
 import uk.co.thinkofdeath.prismarine.game.Gamemode;
 import uk.co.thinkofdeath.prismarine.log.LogUtil;
+import uk.co.thinkofdeath.prismarine.network.NetworkHandler;
 import uk.co.thinkofdeath.prismarine.network.login.Property;
+import uk.co.thinkofdeath.prismarine.network.protocol.IPlayHandlerServerbound;
 import uk.co.thinkofdeath.prismarine.network.protocol.play.JoinGame;
 import uk.co.thinkofdeath.prismarine.network.protocol.play.KeepAlivePing;
 import uk.co.thinkofdeath.prismarine.network.protocol.play.KeepAlivePong;
@@ -17,7 +19,7 @@ import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Logger;
 
-public class PlayHandler implements PacketHandler {
+public class PlayHandler implements IPlayHandlerServerbound {
 
     private static final Logger logger = LogUtil.get(PlayHandler.class);
     private final String username;
@@ -35,6 +37,7 @@ public class PlayHandler implements PacketHandler {
         this.properties = properties;
     }
 
+    @Override
     public void handle(KeepAlivePong keepAlivePong) {
         if (lastPingId != keepAlivePong.getId()) {
             handler.disconnect(new TextComponent("Incorrect Keep Alive"));

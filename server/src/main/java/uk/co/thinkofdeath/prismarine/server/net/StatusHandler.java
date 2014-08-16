@@ -1,15 +1,18 @@
-package uk.co.thinkofdeath.prismarine.network;
+package uk.co.thinkofdeath.prismarine.server.net;
 
 import uk.co.thinkofdeath.prismarine.chat.Color;
 import uk.co.thinkofdeath.prismarine.chat.Component;
 import uk.co.thinkofdeath.prismarine.chat.TextComponent;
+import uk.co.thinkofdeath.prismarine.network.Constants;
+import uk.co.thinkofdeath.prismarine.network.NetworkHandler;
 import uk.co.thinkofdeath.prismarine.network.ping.Ping;
+import uk.co.thinkofdeath.prismarine.network.protocol.IStatusHandlerServerbound;
 import uk.co.thinkofdeath.prismarine.network.protocol.status.StatusPing;
 import uk.co.thinkofdeath.prismarine.network.protocol.status.StatusPong;
 import uk.co.thinkofdeath.prismarine.network.protocol.status.StatusReponse;
 import uk.co.thinkofdeath.prismarine.network.protocol.status.StatusRequest;
 
-public class StatusHandler implements PacketHandler {
+public class StatusHandler implements IStatusHandlerServerbound {
 
     private NetworkHandler handler;
     private State currentState = State.WAITING_REQUEST;
@@ -19,6 +22,7 @@ public class StatusHandler implements PacketHandler {
         this.handler = handler;
     }
 
+    @Override
     public void handle(StatusRequest statusRequest) {
         require(State.WAITING_REQUEST);
 
@@ -37,6 +41,7 @@ public class StatusHandler implements PacketHandler {
         currentState = State.WAITING_PING;
     }
 
+    @Override
     public void handle(StatusPing statusPing) {
         require(State.WAITING_PING);
         handler.getChannel().write(new StatusPong(statusPing.getTime()))
