@@ -12,11 +12,13 @@ public class CompressionCodec extends ByteToMessageCodec<ByteBuf> {
 
     private int threshold;
 
-    private Inflater inflater = new Inflater();
-    private Deflater deflater = new Deflater();
-    private byte[] dataBuffer = new byte[8192];
-    private byte[] compBuffer = new byte[8192];
-    private byte[] decompBuffer = new byte[8192];
+    private ThreadLocal<CompressionInfo> info = new ThreadLocal<CompressionInfo>(){
+
+        @Override
+        protected CompressionInfo initialValue() {
+            return new CompressionInfo();
+        }
+    };
 
     @Override
     protected void encode(ChannelHandlerContext ctx, ByteBuf msg, ByteBuf out) throws Exception {
@@ -25,6 +27,7 @@ public class CompressionCodec extends ByteToMessageCodec<ByteBuf> {
             buf.writeVarInt(0);
             buf.writeBytes(msg);
         } else {
+            CompressionInfo ci = info.get();
 
             byte[] data;
             int offset = 0;
@@ -36,22 +39,22 @@ public class CompressionCodec extends ByteToMessageCodec<ByteBuf> {
                 msg.skipBytes(msg.readableBytes());
             } else {
                 dataSize = msg.readableBytes();
-                if (dataBuffer.length < dataSize) {
-                    dataBuffer = new byte[dataSize];
+                if (ci.dataBuffer.length < dataSize) {
+                    ci.dataBuffer = new byte[dataSize];
                 }
-                msg.readBytes(dataBuffer, 0, dataSize);
-                data = dataBuffer;
+                msg.readBytes(ci.dataBuffer, 0, dataSize);
+                data = ci.dataBuffer;
             }
 
             buf.writeVarInt(dataSize);
 
-            deflater.setInput(data, offset, dataSize);
-            deflater.finish();
-            while (!deflater.finished()) {
-                int count = deflater.deflate(compBuffer);
-                out.writeBytes(compBuffer, 0, count);
+            ci.deflater.setInput(data, offset, dataSize);
+            ci.deflater.finish();
+            while (!ci.deflater.finished()) {
+                int count = ci.deflater.deflate(ci.compBuffer);
+                out.writeBytes(ci.compBuffer, 0, count);
             }
-            deflater.reset();
+            ci.deflater.reset();
         }
     }
 
@@ -62,17 +65,18 @@ public class CompressionCodec extends ByteToMessageCodec<ByteBuf> {
         if (size == 0) {
             out.add(buf.readBytes(buf.readableBytes()));
         } else {
-            if (decompBuffer.length < in.readableBytes()) {
-                decompBuffer = new byte[in.readableBytes()];
+            CompressionInfo ci = info.get();
+            if (ci.decompBuffer.length < in.readableBytes()) {
+                ci.decompBuffer = new byte[in.readableBytes()];
             }
             int count = in.readableBytes();
-            in.readBytes(decompBuffer, 0, count);
-            inflater.setInput(decompBuffer, 0, count);
+            in.readBytes(ci.decompBuffer, 0, count);
+            ci.inflater.setInput(ci.decompBuffer, 0, count);
 
             ByteBuf oBuf = ctx.alloc().heapBuffer(size);
-            oBuf.writerIndex(inflater.inflate(oBuf.array(), oBuf.arrayOffset(), size));
+            oBuf.writerIndex(ci.inflater.inflate(oBuf.array(), oBuf.arrayOffset(), size));
             out.add(oBuf);
-            inflater.reset();
+            ci.inflater.reset();
         }
     }
 
@@ -82,5 +86,14 @@ public class CompressionCodec extends ByteToMessageCodec<ByteBuf> {
 
     public void setThreshold(int threshold) {
         this.threshold = threshold;
+    }
+
+    private static class CompressionInfo {
+
+        public Inflater inflater = new Inflater();
+        public Deflater deflater = new Deflater();
+        public byte[] dataBuffer = new byte[8192];
+        public byte[] compBuffer = new byte[8192];
+        public byte[] decompBuffer = new byte[8192];
     }
 }
