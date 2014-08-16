@@ -12,8 +12,8 @@ public class VarIntFrameCodec extends ByteToMessageCodec<ByteBuf> {
     @Override
     protected void encode(ChannelHandlerContext ctx, ByteBuf msg, ByteBuf out) throws Exception {
         MCByteBuf buf = new MCByteBuf(out);
+        buf.ensureWritable(sizeOf(msg.readableBytes()) + msg.readableBytes());
         buf.writeVarInt(msg.readableBytes());
-        buf.ensureWritable(msg.readableBytes());
         buf.writeBytes(msg);
     }
 
@@ -45,5 +45,13 @@ public class VarIntFrameCodec extends ByteToMessageCodec<ByteBuf> {
             return;
         }
         out.add(in.readBytes(val));
+    }
+
+    private static int sizeOf(int i) {
+        if ((i & ~0b1111111) == 0) return 1;
+        if ((i & ~0b111111111111111) == 0) return 2;
+        if ((i & ~0b11111111111111111111111) == 0) return 3;
+        if ((i & ~0b1111111111111111111111111111111) == 0) return 4;
+        return 5;
     }
 }
