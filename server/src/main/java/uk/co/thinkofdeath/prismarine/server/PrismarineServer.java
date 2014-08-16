@@ -34,7 +34,7 @@ public class PrismarineServer {
     }
 
     public void start() {
-        networkManager.listen(config.getBindAddress(), config.getPort(), HandshakingHandler.class);
+        networkManager.listen(config.getBindAddress(), config.getPort(), HandshakingHandler::new);
     }
 
     public void close() {

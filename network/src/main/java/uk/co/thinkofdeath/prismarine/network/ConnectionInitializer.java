@@ -24,15 +24,16 @@ import uk.co.thinkofdeath.prismarine.log.LogUtil;
 import uk.co.thinkofdeath.prismarine.network.protocol.PacketHandler;
 import uk.co.thinkofdeath.prismarine.network.protocol.Protocol;
 
+import java.util.function.Supplier;
 import java.util.logging.Logger;
 
 public class ConnectionInitializer extends ChannelInitializer<SocketChannel> {
 
     private static final Logger logger = LogUtil.get(ConnectionInitializer.class);
     private final NetworkManager networkManager;
-    private final Class<? extends PacketHandler> initialHandler;
+    private final Supplier<PacketHandler> initialHandler;
 
-    public ConnectionInitializer(NetworkManager networkManager, Class<? extends PacketHandler> initialHandler) {
+    public ConnectionInitializer(NetworkManager networkManager, Supplier<PacketHandler> initialHandler) {
         this.networkManager = networkManager;
         this.initialHandler = initialHandler;
     }
@@ -45,6 +46,6 @@ public class ConnectionInitializer extends ChannelInitializer<SocketChannel> {
         pipeline.addLast("timeout", new ReadTimeoutHandler(30));
         pipeline.addLast("frame-codec", new VarIntFrameCodec());
         pipeline.addLast("packet-codec", new PacketCodec(Protocol.HANDSHAKING, networkManager.getIncomingPacketType()));
-        pipeline.addLast("handler", new NetworkHandler(networkManager, ch, initialHandler.newInstance()));
+        pipeline.addLast("handler", new NetworkHandler(networkManager, ch, initialHandler.get()));
     }
 }

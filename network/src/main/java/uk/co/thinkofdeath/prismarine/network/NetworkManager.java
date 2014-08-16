@@ -30,6 +30,7 @@ import uk.co.thinkofdeath.prismarine.network.protocol.ProtocolDirection;
 import java.security.KeyPair;
 import java.security.KeyPairGenerator;
 import java.security.NoSuchAlgorithmException;
+import java.util.function.Supplier;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -45,7 +46,7 @@ public class NetworkManager {
     public NetworkManager() {
     }
 
-    public void listen(String address, int port, Class<? extends PacketHandler> initialHandler) {
+    public void listen(String address, int port, Supplier<PacketHandler> initialHandler) {
         incomingPacketType = ProtocolDirection.SERVERBOUND;
         if (isOnlineMode()) {
             logger.info("Generating encryption keys");
