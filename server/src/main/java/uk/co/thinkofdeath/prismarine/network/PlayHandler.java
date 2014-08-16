@@ -39,6 +39,7 @@ public class PlayHandler implements PacketHandler {
         if (lastPingId != keepAlivePong.getId()) {
             handler.disconnect(new TextComponent("Incorrect Keep Alive"));
         }
+        lastPingId = -1;
     }
 
     @Override
@@ -46,6 +47,10 @@ public class PlayHandler implements PacketHandler {
         this.handler = handler;
         handler.getChannel().closeFuture().addListener(f -> pingTask.cancel(true));
         pingTask = handler.getChannel().eventLoop().scheduleAtFixedRate(() -> {
+            if (lastPingId != -1) {
+                handler.disconnect(new TextComponent("Timed out"));
+                return;
+            }
             lastPingId = random.nextInt(Short.MAX_VALUE);
             handler.sendPacket(new KeepAlivePing(lastPingId));
         }, 5, 10, TimeUnit.SECONDS);
