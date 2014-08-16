@@ -43,8 +43,10 @@ public enum Protocol {
     }};
 
     private final int id;
+    @SuppressWarnings("unchecked")
     private final Class<? extends Packet>[] packetsByIdClientbound = new Class[256];
     private int nextClientboundId = 0;
+    @SuppressWarnings("unchecked")
     private final Class<? extends Packet>[] packetsByIdServerbound = new Class[256];
     private int nextServerboundId = 0;
     private final Map<Class<? extends Packet>, Integer> packetsByClass = new HashMap<>();

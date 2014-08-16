@@ -37,6 +37,7 @@ public class NetworkHandler extends SimpleChannelInboundHandler<Packet> {
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     protected void messageReceived(ChannelHandlerContext ctx, Packet msg) throws Exception {
         if (connected) {
             logger.info(msg.asString());
