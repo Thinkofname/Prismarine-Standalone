@@ -26,6 +26,6 @@ public class ConnectionInitializer extends ChannelInitializer<SocketChannel> {
         pipeline.addLast("timeout", new ReadTimeoutHandler(30));
         pipeline.addLast("frame-codec", new VarIntFrameCodec());
         pipeline.addLast("packet-codec", new PacketCodec(Protocol.HANDSHAKING));
-        pipeline.addLast("handler", new NetworkHandler(networkManager.getServer(), ch, new HandshakingHandler()));
+        pipeline.addLast("handler", new NetworkHandler(networkManager, ch, new HandshakingHandler()));
     }
 }

@@ -43,7 +43,7 @@ public class LoginHandler implements PacketHandler {
     public void handle(LoginStart loginStart) {
         require(State.START);
         username = loginStart.getUsername();
-        if (handler.getServer().isOnlineMode()) {
+        if (handler.getManager().isOnlineMode()) {
             currentState = State.WAITING_RESPONSE;
             verifyToken = new byte[16];
             try {
@@ -53,7 +53,7 @@ public class LoginHandler implements PacketHandler {
             }
             handler.sendPacket(new EncryptionRequest(
                     serverId,
-                    handler.getServer().getNetworkKeyPair().getPublic(),
+                    handler.getManager().getNetworkKeyPair().getPublic(),
                     verifyToken
             ));
         } else {
@@ -101,7 +101,7 @@ public class LoginHandler implements PacketHandler {
 
             digest.update(serverId.getBytes(StandardCharsets.UTF_8));
             digest.update(secretKeyBytes);
-            digest.update(handler.getServer().getNetworkKeyPair().getPublic().getEncoded());
+            digest.update(handler.getManager().getNetworkKeyPair().getPublic().getEncoded());
 
             handler.enableEncryption(secretKey);
 
@@ -121,7 +121,7 @@ public class LoginHandler implements PacketHandler {
     }
 
     private byte[] decrypt(byte[] data) throws NoSuchPaddingException, NoSuchAlgorithmException, InvalidKeyException, BadPaddingException, IllegalBlockSizeException {
-        PrivateKey privateKey = handler.getServer().getNetworkKeyPair().getPrivate();
+        PrivateKey privateKey = handler.getManager().getNetworkKeyPair().getPrivate();
         Cipher cipher = Cipher.getInstance(privateKey.getAlgorithm());
         cipher.init(Cipher.DECRYPT_MODE, privateKey);
         return cipher.doFinal(data);

@@ -11,7 +11,6 @@ import uk.co.thinkofdeath.prismarine.network.protocol.Packet;
 import uk.co.thinkofdeath.prismarine.network.protocol.Protocol;
 import uk.co.thinkofdeath.prismarine.network.protocol.login.LoginDisconnect;
 import uk.co.thinkofdeath.prismarine.network.protocol.login.SetInitialCompression;
-import uk.co.thinkofdeath.prismarine.server.PrismarineServer;
 
 import javax.crypto.SecretKey;
 import java.util.logging.Logger;
@@ -19,13 +18,13 @@ import java.util.logging.Logger;
 public class NetworkHandler extends SimpleChannelInboundHandler<Packet> {
 
     private static final Logger logger = LogUtil.get(NetworkHandler.class);
-    private final PrismarineServer server;
+    private final NetworkManager manager;
     private final SocketChannel channel;
     private PacketHandler handler;
     private boolean connected = true;
 
-    public NetworkHandler(PrismarineServer server, SocketChannel ch, PacketHandler handler) {
-        this.server = server;
+    public NetworkHandler(NetworkManager manager, SocketChannel ch, PacketHandler handler) {
+        this.manager = manager;
         channel = ch;
         setHandler(handler);
         ch.closeFuture().addListener(f -> {
@@ -106,7 +105,7 @@ public class NetworkHandler extends SimpleChannelInboundHandler<Packet> {
         return channel;
     }
 
-    public PrismarineServer getServer() {
-        return server;
+    public NetworkManager getManager() {
+        return manager;
     }
 }

@@ -8,7 +8,6 @@ import uk.co.thinkofdeath.prismarine.network.protocol.status.StatusPing;
 import uk.co.thinkofdeath.prismarine.network.protocol.status.StatusPong;
 import uk.co.thinkofdeath.prismarine.network.protocol.status.StatusReponse;
 import uk.co.thinkofdeath.prismarine.network.protocol.status.StatusRequest;
-import uk.co.thinkofdeath.prismarine.server.PrismarineServer;
 
 public class StatusHandler implements PacketHandler {
 
@@ -30,8 +29,8 @@ public class StatusHandler implements PacketHandler {
         world.setColor(Color.BLUE);
         motd.addComponent(world);
         ping.setDescription(motd);
-        ping.getVersion().setName("MicroMC - " + PrismarineServer.MINECRAFT_VERSION);
-        ping.getVersion().setProtocol(PrismarineServer.PROTOCOL_VERSION);
+        ping.getVersion().setName("MicroMC - " + Constants.MINECRAFT_VERSION);
+        ping.getVersion().setProtocol(Constants.PROTOCOL_VERSION);
         ping.getPlayers().setMax(20);
 
         handler.sendPacket(new StatusReponse(ping));

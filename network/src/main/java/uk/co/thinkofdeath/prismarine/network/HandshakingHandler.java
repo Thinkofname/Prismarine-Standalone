@@ -3,7 +3,6 @@ package uk.co.thinkofdeath.prismarine.network;
 import uk.co.thinkofdeath.prismarine.chat.TextComponent;
 import uk.co.thinkofdeath.prismarine.network.protocol.Protocol;
 import uk.co.thinkofdeath.prismarine.network.protocol.handshaking.Handshake;
-import uk.co.thinkofdeath.prismarine.server.PrismarineServer;
 
 public class HandshakingHandler implements PacketHandler {
 
@@ -21,13 +20,13 @@ public class HandshakingHandler implements PacketHandler {
                         .setProtocol(Protocol.LOGIN);
                 handler.setHandler(new LoginHandler());
 
-                if (handshake.getProtocolVersion() < PrismarineServer.PROTOCOL_VERSION) {
-                    handler.disconnect(new TextComponent("Client out of date. This server is using " + PrismarineServer.MINECRAFT_VERSION
-                            + " (" + handshake.getProtocolVersion() + ":" + PrismarineServer.PROTOCOL_VERSION + ")"));
+                if (handshake.getProtocolVersion() < Constants.PROTOCOL_VERSION) {
+                    handler.disconnect(new TextComponent("Client out of date. This server is using " + Constants.MINECRAFT_VERSION
+                            + " (" + handshake.getProtocolVersion() + ":" + Constants.PROTOCOL_VERSION + ")"));
                     return;
-                } else if (handshake.getProtocolVersion() > PrismarineServer.PROTOCOL_VERSION) {
-                    handler.disconnect(new TextComponent("Server out of data. This server is using " + PrismarineServer.MINECRAFT_VERSION
-                            + " (" + handshake.getProtocolVersion() + ":" + PrismarineServer.PROTOCOL_VERSION + ")"));
+                } else if (handshake.getProtocolVersion() > Constants.PROTOCOL_VERSION) {
+                    handler.disconnect(new TextComponent("Server out of data. This server is using " + Constants.MINECRAFT_VERSION
+                            + " (" + handshake.getProtocolVersion() + ":" + Constants.PROTOCOL_VERSION + ")"));
                     return;
                 }
                 break;

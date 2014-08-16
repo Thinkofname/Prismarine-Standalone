@@ -8,22 +8,38 @@ import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
 import uk.co.thinkofdeath.prismarine.log.LogUtil;
-import uk.co.thinkofdeath.prismarine.server.PrismarineServer;
 
+import java.security.KeyPair;
+import java.security.KeyPairGenerator;
+import java.security.NoSuchAlgorithmException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class NetworkManager {
 
     private static final Logger logger = LogUtil.get(NetworkManager.class);
-    private final PrismarineServer server;
     private Channel channel;
 
-    public NetworkManager(PrismarineServer server) {
-        this.server = server;
+    private boolean onlineMode = true;
+    private KeyPair networkKeyPair;
+
+    public NetworkManager() {
     }
 
     public void listen(String address, int port) {
+
+        if (isOnlineMode()) {
+            logger.info("Generating encryption keys");
+            try {
+                KeyPairGenerator generator = KeyPairGenerator.getInstance("RSA");
+                generator.initialize(1024);
+                networkKeyPair = generator.generateKeyPair();
+            } catch (NoSuchAlgorithmException e) {
+                logger.info("Failed to generate encryption keys");
+                throw new RuntimeException(e);
+            }
+        }
+
         logger.log(Level.INFO, "Starting on {0}:{1,number,#}",
                 new Object[]{address, port});
 
@@ -48,7 +64,15 @@ public class NetworkManager {
         channel.close().awaitUninterruptibly();
     }
 
-    public PrismarineServer getServer() {
-        return server;
+    public boolean isOnlineMode() {
+        return onlineMode;
+    }
+
+    public void setOnlineMode(boolean onlineMode) {
+        this.onlineMode = onlineMode;
+    }
+
+    public KeyPair getNetworkKeyPair() {
+        return networkKeyPair;
     }
 }
