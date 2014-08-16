@@ -1,4 +1,8 @@
-package uk.co.thinkofdeath.prismarine;
+package uk.co.thinkofdeath.prismarine.server;
+
+import uk.co.thinkofdeath.prismarine.Configuration;
+import uk.co.thinkofdeath.prismarine.NeatFormatter;
+import uk.co.thinkofdeath.prismarine.Prismarine;
 
 import java.util.Scanner;
 import java.util.logging.ConsoleHandler;

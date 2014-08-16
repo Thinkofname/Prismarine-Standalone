@@ -1,1 +1,5 @@
 rootProject.name = 'Prismarine'
+
+include 'shared'
+include 'server'
+
