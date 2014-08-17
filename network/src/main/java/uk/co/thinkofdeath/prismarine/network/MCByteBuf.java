@@ -33,22 +33,51 @@ import java.nio.channels.ScatteringByteChannel;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 
+/**
+ * An extension to netty's ByteBuf to support
+ * the extra types used by Minecraft
+ */
 public class MCByteBuf extends ByteBuf {
 
     private final ByteBuf buf;
 
+    /**
+     * Wraps the provided ByteBuf
+     *
+     * @param buf
+     *         the buffer to wrap
+     */
     public MCByteBuf(ByteBuf buf) {
         this.buf = buf;
     }
 
+    /**
+     * Reads a chat component from the ByteBuf
+     *
+     * @return the read chat component
+     */
     public Component readChat() {
         return ChatSerializer.fromString(readString(Short.MAX_VALUE));
     }
 
+    /**
+     * Writes a chat component to the ByteBuf
+     *
+     * @param component
+     *         the component to write
+     */
     public void writeChat(Component component) {
         writeString(ChatSerializer.toString(component));
     }
 
+    /**
+     * Reads a length-prefixed byte array from the ByteBuf, limiting
+     * its size.
+     *
+     * @param limit
+     *         the size limit
+     * @return the read byte array
+     */
     public byte[] readByteArray(int limit) {
         int size = readVarInt();
         if (size > limit) {
@@ -59,11 +88,25 @@ public class MCByteBuf extends ByteBuf {
         return data;
     }
 
+    /**
+     * Writes a length-prefixed byte array tto the ByteBuf.
+     *
+     * @param data
+     *         the array to write
+     */
     public void writeByteArray(byte[] data) {
         writeVarInt(data.length);
         writeBytes(data);
     }
 
+    /**
+     * Reads a length prefixed, utf-8 string from the ByteBuf, limiting its
+     * size.
+     *
+     * @param limit
+     *         the size limit
+     * @return the read string
+     */
     public String readString(int limit) {
         int length = readVarInt();
         if (length > limit * 4) {
@@ -76,12 +119,23 @@ public class MCByteBuf extends ByteBuf {
         return str;
     }
 
+    /**
+     * Writes a length prefixed, utf-8 string to the ByteBuf
+     *
+     * @param val
+     *         the string to write
+     */
     public void writeString(String val) {
         byte[] bytes = val.getBytes(StandardCharsets.UTF_8);
         writeVarInt(bytes.length);
         writeBytes(bytes);
     }
 
+    /**
+     * Reads a varint from the ByteBuf
+     *
+     * @return the read varint
+     */
     public int readVarInt() {
         int val = 0;
         int bytes = 0;
@@ -92,6 +146,7 @@ public class MCByteBuf extends ByteBuf {
                 throw new DecoderException("VarInt too big");
             }
 
+            // If the 8th bit is set then the varint continues
             if ((b & 0x80) == 0) {
                 break;
             }
@@ -99,6 +154,12 @@ public class MCByteBuf extends ByteBuf {
         return val;
     }
 
+    /**
+     * Reads a varint from the ByteBuf
+     *
+     * @param val
+     *         the int to encode and write
+     */
     public void writeVarInt(int val) {
         while (true) {
             if ((val & ~0b01111111) == 0) {

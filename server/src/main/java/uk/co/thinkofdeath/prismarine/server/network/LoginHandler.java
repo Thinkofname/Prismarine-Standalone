@@ -155,7 +155,7 @@ public class LoginHandler implements ILoginHandlerServerbound {
         if (properties == null) {
             properties = new Property[0];
         }
-        handler.enableCompression(256);
+        handler.setCompression(256);
 
         handler.sendPacket(new LoginSuccess(
                 uuid.toString(),

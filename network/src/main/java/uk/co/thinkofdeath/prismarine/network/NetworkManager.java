@@ -34,6 +34,10 @@ import java.util.function.Supplier;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+/**
+ * The core network handler. This handles listening for connections
+ * (for a server) or connecting to a server (for clients)
+ */
 public class NetworkManager {
 
     private static final Logger logger = LogUtil.get(NetworkManager.class);
@@ -43,12 +47,28 @@ public class NetworkManager {
     private KeyPair networkKeyPair;
     private ProtocolDirection incomingPacketType;
 
+    /**
+     * Creates a new Network Manager
+     */
     public NetworkManager() {
     }
 
+    /**
+     * Start listening on the specified address & port. The initial handler for
+     * each connection will be created from the supplier
+     *
+     * @param address
+     *         the address of the server
+     * @param port
+     *         the port of the server
+     * @param initialHandler
+     *         the supplier which creates the initial packet handler
+     */
     public void listen(String address, int port, Supplier<PacketHandler> initialHandler) {
+        // Listening == Server
         incomingPacketType = ProtocolDirection.SERVERBOUND;
         if (isOnlineMode()) {
+            // Encryption is only enabled in online mode
             logger.info("Generating encryption keys");
             try {
                 KeyPairGenerator generator = KeyPairGenerator.getInstance("RSA");
@@ -79,23 +99,49 @@ public class NetworkManager {
 
     }
 
+    /**
+     * Disconnects the server/client
+     */
     public void close() {
-        logger.info("Disconnecting players");
+        logger.info("Disconnecting...");
         channel.close().awaitUninterruptibly();
     }
 
+    /**
+     * Returns whether the manager is in online mode or not
+     *
+     * @return whether this is in online mode
+     */
     public boolean isOnlineMode() {
         return onlineMode;
     }
 
+    /**
+     * Enables/Disables online mode for the manager
+     *
+     * @param onlineMode
+     *         the new online mode state
+     */
     public void setOnlineMode(boolean onlineMode) {
         this.onlineMode = onlineMode;
     }
 
+    /**
+     * Returns the key pair used for encryption.
+     * This is null in offline mode
+     *
+     * @return the encryption key pair or null
+     */
     public KeyPair getNetworkKeyPair() {
         return networkKeyPair;
     }
 
+    /**
+     * Returns the incoming packet direction for the manager.
+     * This is null if a connection hasn't been started yet
+     *
+     * @return the incoming packet direction or null
+     */
     public ProtocolDirection getIncomingPacketType() {
         return incomingPacketType;
     }

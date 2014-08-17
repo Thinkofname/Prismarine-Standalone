@@ -26,11 +26,27 @@ import uk.co.thinkofdeath.prismarine.network.protocol.ProtocolDirection;
 
 import java.util.List;
 
+/**
+ * Reads and writes Minecraft packets. Each packet in the Minecraft
+ * protocol as a varint packet id at the front, this codec handles
+ * selecting the right packet based on the id as well as prepending
+ * the id to outgoing packets
+ */
 public class PacketCodec extends ByteToMessageCodec<Packet> {
 
     private Protocol protocol;
     private final ProtocolDirection incomingPacketType;
 
+    /**
+     * Creates a PacketCodec which handles the set sub-protocol
+     * (which may be changed later). The incomingPacketType is used
+     * to know whether this is a client or a server.
+     *
+     * @param protocol
+     *         the initial sub-protocol
+     * @param incomingPacketType
+     *         the direction of incoming packets
+     */
     public PacketCodec(Protocol protocol, ProtocolDirection incomingPacketType) {
         this.protocol = protocol;
         this.incomingPacketType = incomingPacketType;
@@ -55,14 +71,27 @@ public class PacketCodec extends ByteToMessageCodec<Packet> {
                 throw new DecoderException("Failed to read all bytes from " + id);
             }
         } else {
+            // TODO: We need to handle all packets
             buf.skipBytes(buf.readableBytes());
         }
     }
 
+    /**
+     * Sets the sub-protocol that this packet codec handles
+     *
+     * @param protocol
+     *         the sub-protocol
+     */
     public void setProtocol(Protocol protocol) {
         this.protocol = protocol;
     }
 
+    /**
+     * Returns the current protocol being used by this
+     * packet codec
+     *
+     * @return the sub-protocol
+     */
     public Protocol getProtocol() {
         return protocol;
     }

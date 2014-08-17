@@ -24,10 +24,13 @@ import java.util.List;
 import java.util.zip.Deflater;
 import java.util.zip.Inflater;
 
+/**
+ * The compression codec will compress/decompress packets that fall within
+ * the set threshold
+ */
 public class CompressionCodec extends ByteToMessageCodec<ByteBuf> {
 
     private int threshold;
-
     private ThreadLocal<CompressionInfo> info = new ThreadLocal<CompressionInfo>() {
 
         @Override
@@ -48,6 +51,9 @@ public class CompressionCodec extends ByteToMessageCodec<ByteBuf> {
             byte[] data;
             int offset = 0;
             int dataSize;
+            // Handle both direct and heap buffers
+            // heap buffers are faster in this case as they
+            // do not require a copy
             if (!msg.isDirect()) {
                 data = msg.array();
                 offset = msg.arrayOffset();
@@ -89,6 +95,7 @@ public class CompressionCodec extends ByteToMessageCodec<ByteBuf> {
             in.readBytes(ci.decompBuffer, 0, count);
             ci.inflater.setInput(ci.decompBuffer, 0, count);
 
+            // Use heap buffers so we can just access the internal array
             ByteBuf oBuf = ctx.alloc().heapBuffer(size);
             oBuf.writerIndex(ci.inflater.inflate(oBuf.array(), oBuf.arrayOffset(), size));
             out.add(oBuf);
@@ -96,14 +103,26 @@ public class CompressionCodec extends ByteToMessageCodec<ByteBuf> {
         }
     }
 
+    /**
+     * Gets the current threshold
+     *
+     * @return the threshold
+     */
     public int getThreshold() {
         return threshold;
     }
 
+    /**
+     * Sets the new threshold for the codec
+     *
+     * @param threshold
+     *         the new threshold
+     */
     public void setThreshold(int threshold) {
         this.threshold = threshold;
     }
 
+    // Reusable buffers
     private static class CompressionInfo {
 
         public Inflater inflater = new Inflater();

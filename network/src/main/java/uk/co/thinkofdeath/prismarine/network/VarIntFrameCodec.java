@@ -23,11 +23,17 @@ import io.netty.handler.codec.DecoderException;
 
 import java.util.List;
 
+/**
+ * A ByteToMessageCodec which reads a varint a the beginning of a packet
+ * which states the packet's length. The codec also handles outgoing
+ * packets by prepending a varint containing the packet's length
+ */
 public class VarIntFrameCodec extends ByteToMessageCodec<ByteBuf> {
 
     @Override
     protected void encode(ChannelHandlerContext ctx, ByteBuf msg, ByteBuf out) throws Exception {
         MCByteBuf buf = new MCByteBuf(out);
+        // Preallocate the required space
         buf.ensureWritable(sizeOf(msg.readableBytes()) + msg.readableBytes());
         buf.writeVarInt(msg.readableBytes());
         buf.writeBytes(msg);
@@ -35,6 +41,7 @@ public class VarIntFrameCodec extends ByteToMessageCodec<ByteBuf> {
 
     @Override
     protected void decode(ChannelHandlerContext ctx, ByteBuf in, List<Object> out) throws Exception {
+        // Return back to this point if the varint isn't complete
         in.markReaderIndex();
 
         int val = 0;
@@ -51,18 +58,28 @@ public class VarIntFrameCodec extends ByteToMessageCodec<ByteBuf> {
                 throw new DecoderException("VarInt too big");
             }
 
+            // If the 8th bit is set then the varint continues
             if ((b & 0x80) == 0) {
                 break;
             }
         }
 
         if (!in.isReadable(val)) {
+            // Packet isn't complete yet
             in.resetReaderIndex();
             return;
         }
         out.add(in.readBytes(val));
     }
 
+    /**
+     * Returns the number of bytes required to represent the
+     * integer as a varint
+     *
+     * @param i
+     *         the integer to find the size of
+     * @return The number of bytes required
+     */
     private static int sizeOf(int i) {
         if ((i & ~0b1111111) == 0) return 1;
         if ((i & ~0b111111111111111) == 0) return 2;

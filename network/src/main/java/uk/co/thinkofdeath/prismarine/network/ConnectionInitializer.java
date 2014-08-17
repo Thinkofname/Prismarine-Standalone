@@ -27,12 +27,25 @@ import uk.co.thinkofdeath.prismarine.network.protocol.Protocol;
 import java.util.function.Supplier;
 import java.util.logging.Logger;
 
+/**
+ * Initializes the connection for new clients
+ */
 public class ConnectionInitializer extends ChannelInitializer<SocketChannel> {
 
     private static final Logger logger = LogUtil.get(ConnectionInitializer.class);
     private final NetworkManager networkManager;
     private final Supplier<PacketHandler> initialHandler;
 
+    /**
+     * Creates a ConnectionInitializer which will setup the pipeline
+     * for the channel. The PacketCodec will use the handler created
+     * by the initialHandler supplier
+     *
+     * @param networkManager
+     *         the network manager which owns this
+     * @param initialHandler
+     *         the supplier which creates the initial packet handler
+     */
     public ConnectionInitializer(NetworkManager networkManager, Supplier<PacketHandler> initialHandler) {
         this.networkManager = networkManager;
         this.initialHandler = initialHandler;

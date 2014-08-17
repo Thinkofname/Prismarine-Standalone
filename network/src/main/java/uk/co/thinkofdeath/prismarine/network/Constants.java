@@ -16,8 +16,16 @@
 
 package uk.co.thinkofdeath.prismarine.network;
 
+/**
+ * Useful network constants
+ */
 public class Constants {
-
+    /**
+     * The currently supported Minecraft version
+     */
     public static final String MINECRAFT_VERSION = "14w33c";
+    /**
+     * The currently supported protocol version
+     */
     public static final int PROTOCOL_VERSION = 39;
 }

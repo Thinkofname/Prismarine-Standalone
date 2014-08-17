@@ -29,6 +29,10 @@ import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.util.List;
 
+/**
+ * Ciphers the stream with a AES/CFB8/NoPadding cipher, using the
+ * secret key provided
+ */
 public class CipherCodec extends ByteToMessageCodec<ByteBuf> {
 
     private Cipher cipherEncrypt;
@@ -38,6 +42,12 @@ public class CipherCodec extends ByteToMessageCodec<ByteBuf> {
     private byte[] dataBuffer = new byte[8192];
     private byte[] deDataBuffer = new byte[8192];
 
+    /**
+     * Creates a CipherCodec using the provided secret key
+     *
+     * @param secretKey
+     *         the secret key
+     */
     public CipherCodec(SecretKey secretKey) {
         try {
             cipherEncrypt = Cipher.getInstance("AES/CFB8/NoPadding");

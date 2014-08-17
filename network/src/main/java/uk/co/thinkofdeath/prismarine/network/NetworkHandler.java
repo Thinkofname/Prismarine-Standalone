@@ -16,10 +16,10 @@
 
 package uk.co.thinkofdeath.prismarine.network;
 
+import io.netty.channel.Channel;
 import io.netty.channel.ChannelFutureListener;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
-import io.netty.channel.socket.SocketChannel;
 import uk.co.thinkofdeath.prismarine.chat.Component;
 import uk.co.thinkofdeath.prismarine.chat.TextComponent;
 import uk.co.thinkofdeath.prismarine.log.LogUtil;
@@ -33,21 +33,36 @@ import uk.co.thinkofdeath.prismarine.network.protocol.login.SetInitialCompressio
 import javax.crypto.SecretKey;
 import java.util.logging.Logger;
 
+/**
+ * A network handler handles per a client connections, forwarding packets
+ * to the current packet handler.
+ */
 public class NetworkHandler extends SimpleChannelInboundHandler<Packet> {
 
     private static final Logger logger = LogUtil.get(NetworkHandler.class);
     private final NetworkManager manager;
-    private final SocketChannel channel;
+    private final Channel channel;
     private PacketHandler handler;
     private boolean connected = true;
 
-    public NetworkHandler(NetworkManager manager, SocketChannel ch, PacketHandler handler) {
+    /**
+     * Creates a network handler with its packet handler set to
+     * the initial value as passed by the constructor
+     *
+     * @param manager
+     *         the manager which created this
+     * @param channel
+     *         the channel of the client
+     * @param handler
+     *         the initial handler
+     */
+    public NetworkHandler(NetworkManager manager, Channel channel, PacketHandler handler) {
         this.manager = manager;
-        channel = ch;
+        this.channel = channel;
         setHandler(handler);
-        ch.closeFuture().addListener(f -> {
+        channel.closeFuture().addListener(f -> {
             if (connected) {
-                logger.info("Disconnected(" + channel.remoteAddress() + "): Connection closed");
+                logger.info("Disconnected(" + this.channel.remoteAddress() + "): Connection closed");
             }
             connected = false;
         });
@@ -74,15 +89,36 @@ public class NetworkHandler extends SimpleChannelInboundHandler<Packet> {
         ctx.flush();
     }
 
+    /**
+     * Sends a packet to the client
+     *
+     * @param packet
+     *         The packet to send
+     */
     public void sendPacket(Packet packet) {
         channel.write(packet, channel.voidPromise());
     }
 
+    /**
+     * Enables encryption on this handler's channel using the
+     * provided secret key
+     *
+     * @param secretKey
+     *         the secret key to use
+     */
     public void enableEncryption(SecretKey secretKey) {
         channel.pipeline().addBefore("frame-codec", "cipher-codec", new CipherCodec(secretKey));
     }
 
-    public void enableCompression(int threshold) {
+    /**
+     * Sets the compression threshold for this channel. A value of
+     * 0 compresses everything, a value of -1 disables compression.
+     * Vanilla has the default threshold of 256
+     *
+     * @param threshold
+     *         the new threshold for the compression, -1 to disable
+     */
+    public void setCompression(int threshold) {
         if (manager.getIncomingPacketType() == ProtocolDirection.SERVERBOUND) {
             // Only servers can change the threshold for others
             if (channel.pipeline().get(PacketCodec.class).getProtocol() == Protocol.LOGIN) {
@@ -108,6 +144,13 @@ public class NetworkHandler extends SimpleChannelInboundHandler<Packet> {
         }
     }
 
+    /**
+     * Disconnects the player with a reason, the reason is not
+     * sent to the server if this a client
+     *
+     * @param reason
+     *         the disconnect reason
+     */
     public void disconnect(Component reason) {
         logger.info("Disconnected(" + channel.remoteAddress() + "): " + reason.asString());
         Packet packet;
@@ -129,15 +172,31 @@ public class NetworkHandler extends SimpleChannelInboundHandler<Packet> {
         setHandler(new NullHandler());
     }
 
+    /**
+     * Sets the packet handler for this network handler
+     *
+     * @param handler
+     *         the new handler
+     */
     public void setHandler(PacketHandler handler) {
         this.handler = handler;
         handler.setNetworkHandler(this);
     }
 
-    public SocketChannel getChannel() {
+    /**
+     * Returns the channel owned by this handler
+     *
+     * @return the channel
+     */
+    public Channel getChannel() {
         return channel;
     }
 
+    /**
+     * Returns the manager which owners this handler
+     *
+     * @return the manager
+     */
     public NetworkManager getManager() {
         return manager;
     }
