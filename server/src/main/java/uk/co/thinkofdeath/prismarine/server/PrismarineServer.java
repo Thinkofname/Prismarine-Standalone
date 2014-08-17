@@ -39,7 +39,7 @@ public class PrismarineServer extends Prismarine {
     }
 
     public void close() {
-        logger.info("Shutting down MicroMC");
+        logger.info("Shutting down Prismarine");
         networkManager.close();
 
         logger.info("Shutdown complete");
