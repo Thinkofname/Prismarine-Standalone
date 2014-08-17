@@ -47,6 +47,9 @@ public enum Protocol {
         addPacket(ProtocolDirection.CLIENTBOUND, UseBed.class);
         addPacket(ProtocolDirection.CLIENTBOUND, Animation.class);
         addPacket(ProtocolDirection.CLIENTBOUND, SpawnPlayer.class);
+        addPacket(ProtocolDirection.CLIENTBOUND, CollectItem.class);
+        addPacket(ProtocolDirection.CLIENTBOUND, SpawnObject.class);
+        addPacket(ProtocolDirection.CLIENTBOUND, SpawnLivingEntity.class);
     }},
     STATUS(1) {{
         addPacket(ProtocolDirection.SERVERBOUND, StatusRequest.class);

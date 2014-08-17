@@ -44,4 +44,10 @@ public interface IPlayHandlerClientbound extends PacketHandler {
     void handle(Animation animation);
 
     void handle(SpawnPlayer spawnPlayer);
+
+    void handle(CollectItem collectItem);
+
+    void handle(SpawnObject spawnObject);
+
+    void handle(SpawnLivingEntity spawnLivingEntity);
 }
