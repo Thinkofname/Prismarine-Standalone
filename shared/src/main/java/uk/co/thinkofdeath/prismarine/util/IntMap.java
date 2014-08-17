@@ -16,6 +16,8 @@
 
 package uk.co.thinkofdeath.prismarine.util;
 
+import java.util.function.ObjIntConsumer;
+
 public class IntMap<T> {
 
     private static final Object NULL = new Object();
@@ -72,5 +74,13 @@ public class IntMap<T> {
             return null;
         }
         return (T) val;
+    }
+
+    public void forEach(ObjIntConsumer<T> func) {
+        for (int i = 0; i < values.length; i++) {
+            if (contains(i)) {
+                func.accept(get(i), i);
+            }
+        }
     }
 }
