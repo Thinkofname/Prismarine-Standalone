@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package uk.co.thinkofdeath.prismarine.server.net;
+package uk.co.thinkofdeath.prismarine.server.network;
 
 import uk.co.thinkofdeath.prismarine.chat.TextComponent;
 import uk.co.thinkofdeath.prismarine.network.Constants;

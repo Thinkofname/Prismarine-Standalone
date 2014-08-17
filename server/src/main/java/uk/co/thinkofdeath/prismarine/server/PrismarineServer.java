@@ -16,13 +16,14 @@
 
 package uk.co.thinkofdeath.prismarine.server;
 
+import uk.co.thinkofdeath.prismarine.Prismarine;
 import uk.co.thinkofdeath.prismarine.log.LogUtil;
 import uk.co.thinkofdeath.prismarine.network.NetworkManager;
-import uk.co.thinkofdeath.prismarine.server.net.HandshakingHandler;
+import uk.co.thinkofdeath.prismarine.server.network.HandshakingHandler;
 
 import java.util.logging.Logger;
 
-public class PrismarineServer {
+public class PrismarineServer extends Prismarine {
 
     private static final Logger logger = LogUtil.get(PrismarineServer.class);
     private final Configuration config;

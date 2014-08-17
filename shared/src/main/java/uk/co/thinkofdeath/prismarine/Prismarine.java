@@ -14,11 +14,7 @@
  * limitations under the License.
  */
 
-rootProject.name = 'Prismarine'
+package uk.co.thinkofdeath.prismarine;
 
-include 'shared'
-include 'server'
-include 'network'
-
-include 'client'
-
+public abstract class Prismarine {
+}

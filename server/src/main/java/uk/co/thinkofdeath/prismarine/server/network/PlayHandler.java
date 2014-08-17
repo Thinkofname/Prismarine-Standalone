@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package uk.co.thinkofdeath.prismarine.server.net;
+package uk.co.thinkofdeath.prismarine.server.network;
 
 import io.netty.util.concurrent.ScheduledFuture;
 import uk.co.thinkofdeath.prismarine.chat.TextComponent;

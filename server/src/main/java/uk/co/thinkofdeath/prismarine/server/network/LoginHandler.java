@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package uk.co.thinkofdeath.prismarine.server.net;
+package uk.co.thinkofdeath.prismarine.server.network;
 
 import com.google.common.io.Resources;
 import com.google.gson.Gson;
