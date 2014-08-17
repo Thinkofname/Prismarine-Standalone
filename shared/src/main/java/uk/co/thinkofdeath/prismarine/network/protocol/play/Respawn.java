@@ -23,57 +23,37 @@ import uk.co.thinkofdeath.prismarine.network.MCByteBuf;
 import uk.co.thinkofdeath.prismarine.network.protocol.IPlayHandlerClientbound;
 import uk.co.thinkofdeath.prismarine.network.protocol.Packet;
 
-public class JoinGame implements Packet<IPlayHandlerClientbound> {
+public class Respawn implements Packet<IPlayHandlerClientbound> {
 
-    private int entityId;
-    private GameMode gameMode;
-    private boolean hardcore;
     private Dimension dimension;
     private Difficulty difficulty;
-    private int maxPlayers;
+    private GameMode gameMode;
     private String levelType;
-    private boolean reducedDebug;
 
-    public JoinGame() {
+    public Respawn() {
     }
 
-    public JoinGame(int entityId, GameMode gameMode, boolean hardcore,
-                    Dimension dimension, Difficulty difficulty,
-                    int maxPlayers, String levelType, boolean reducedDebug) {
-        this.entityId = entityId;
-        this.gameMode = gameMode;
-        this.hardcore = hardcore;
+    public Respawn(Dimension dimension, Difficulty difficulty, GameMode gameMode, String levelType) {
         this.dimension = dimension;
         this.difficulty = difficulty;
-        this.maxPlayers = maxPlayers;
+        this.gameMode = gameMode;
         this.levelType = levelType;
-        this.reducedDebug = reducedDebug;
     }
 
     @Override
     public void read(MCByteBuf buf) {
-        entityId = buf.readInt();
-        int mode = buf.readUnsignedByte();
-        if ((mode & 0x8) != 0) {
-            hardcore = true;
-        }
-        gameMode = GameMode.values()[mode & 0b111];
-        dimension = Dimension.byId(buf.readByte());
+        dimension = Dimension.byId(buf.readInt());
+        gameMode = GameMode.values()[buf.readUnsignedByte()];
         difficulty = Difficulty.values()[buf.readUnsignedByte()];
-        maxPlayers = buf.readUnsignedByte();
         levelType = buf.readString(255);
-        reducedDebug = buf.readBoolean();
     }
 
     @Override
     public void write(MCByteBuf buf) {
-        buf.writeInt(entityId);
-        buf.writeByte(gameMode.ordinal() | (hardcore ? 0x8 : 0x0));
-        buf.writeByte(dimension.getId());
+        buf.writeInt(dimension.getId());
+        buf.writeByte(gameMode.ordinal());
         buf.writeByte(difficulty.ordinal());
-        buf.writeByte(maxPlayers);
         buf.writeString(levelType);
-        buf.writeBoolean(reducedDebug);
     }
 
     @Override

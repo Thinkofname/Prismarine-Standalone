@@ -38,8 +38,15 @@ public enum Protocol {
         addPacket(ProtocolDirection.CLIENTBOUND, JoinGame.class);
         addPacket(ProtocolDirection.CLIENTBOUND, ServerMessage.class);
         addPacket(ProtocolDirection.CLIENTBOUND, TimeUpdate.class);
-        skip(ProtocolDirection.CLIENTBOUND, 4);
+        addPacket(ProtocolDirection.CLIENTBOUND, EntityEquipment.class);
+        addPacket(ProtocolDirection.CLIENTBOUND, SpawnPosition.class);
+        addPacket(ProtocolDirection.CLIENTBOUND, UpdateHealth.class);
+        addPacket(ProtocolDirection.CLIENTBOUND, Respawn.class);
         addPacket(ProtocolDirection.CLIENTBOUND, PlayerTeleport.class);
+        addPacket(ProtocolDirection.CLIENTBOUND, SetHeldItem.class);
+        addPacket(ProtocolDirection.CLIENTBOUND, UseBed.class);
+        addPacket(ProtocolDirection.CLIENTBOUND, Animation.class);
+        addPacket(ProtocolDirection.CLIENTBOUND, SpawnPlayer.class);
     }},
     STATUS(1) {{
         addPacket(ProtocolDirection.SERVERBOUND, StatusRequest.class);
@@ -93,6 +100,12 @@ public enum Protocol {
     }
 
     protected void addPacket(ProtocolDirection direction, Class<? extends Packet> packet) {
+        try {
+            packet.getConstructor();
+        } catch (NoSuchMethodException e) {
+            throw new RuntimeException(packet.getSimpleName() + " is missing a zero arg constructor");
+        }
+
         int pid = direction == ProtocolDirection.CLIENTBOUND ? nextClientboundId++ : nextServerboundId++;
         packetsByClass.put(packet, pid);
         if (direction == ProtocolDirection.CLIENTBOUND) {

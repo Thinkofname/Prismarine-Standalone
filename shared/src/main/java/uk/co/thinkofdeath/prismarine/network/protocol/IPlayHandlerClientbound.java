@@ -30,4 +30,18 @@ public interface IPlayHandlerClientbound extends PacketHandler {
     void handle(TimeUpdate timeUpdate);
 
     void handle(EntityEquipment entityEquipment);
+
+    void handle(SpawnPosition spawnPosition);
+
+    void handle(UpdateHealth updateHealth);
+
+    void handle(Respawn respawn);
+
+    void handle(SetHeldItem setHeldItem);
+
+    void handle(UseBed useBed);
+
+    void handle(Animation animation);
+
+    void handle(SpawnPlayer spawnPlayer);
 }

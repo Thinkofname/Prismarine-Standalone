@@ -18,6 +18,7 @@ package uk.co.thinkofdeath.prismarine;
 
 import uk.co.thinkofdeath.prismarine.block.BlockRegistry;
 import uk.co.thinkofdeath.prismarine.item.ItemRegistry;
+import uk.co.thinkofdeath.prismarine.network.NetworkManager;
 
 public abstract class Prismarine {
 
@@ -25,6 +26,7 @@ public abstract class Prismarine {
 
     private final BlockRegistry blockRegistry = new BlockRegistry();
     private final ItemRegistry itemRegistry = new ItemRegistry();
+    private NetworkManager networkManager = new NetworkManager(this);
 
     protected Prismarine() {
         if (instance != null) {
@@ -35,6 +37,10 @@ public abstract class Prismarine {
 
     protected void init() {
 
+    }
+
+    public NetworkManager getNetworkManager() {
+        return networkManager;
     }
 
     public BlockRegistry getBlockRegistry() {

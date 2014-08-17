@@ -31,7 +31,7 @@ public enum Dimension {
         return id;
     }
 
-    public static Dimension byId(byte b) {
+    public static Dimension byId(int b) {
         for (Dimension dimension : values()) {
             if (dimension.getId() == b) {
                 return dimension;

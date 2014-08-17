@@ -16,7 +16,7 @@
 
 package uk.co.thinkofdeath.prismarine.game;
 
-public enum Gamemode {
+public enum GameMode {
     SURVIVAL,
     CREATIVE,
     ADVENTURE,

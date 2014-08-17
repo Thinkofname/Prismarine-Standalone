@@ -20,7 +20,7 @@ import io.netty.util.concurrent.ScheduledFuture;
 import uk.co.thinkofdeath.prismarine.chat.TextComponent;
 import uk.co.thinkofdeath.prismarine.game.Difficulty;
 import uk.co.thinkofdeath.prismarine.game.Dimension;
-import uk.co.thinkofdeath.prismarine.game.Gamemode;
+import uk.co.thinkofdeath.prismarine.game.GameMode;
 import uk.co.thinkofdeath.prismarine.log.LogUtil;
 import uk.co.thinkofdeath.prismarine.network.NetworkHandler;
 import uk.co.thinkofdeath.prismarine.network.login.Property;
@@ -78,7 +78,7 @@ public class PlayHandler implements IPlayHandlerServerbound {
     public void join() {
         handler.sendPacket(new JoinGame(
                 0,
-                Gamemode.CREATIVE,
+                GameMode.CREATIVE,
                 false,
                 Dimension.OVERWORLD,
                 Difficulty.EASY,

@@ -23,6 +23,7 @@ import io.netty.handler.codec.DecoderException;
 import uk.co.thinkofdeath.prismarine.Prismarine;
 import uk.co.thinkofdeath.prismarine.chat.ChatSerializer;
 import uk.co.thinkofdeath.prismarine.chat.Component;
+import uk.co.thinkofdeath.prismarine.game.Position;
 import uk.co.thinkofdeath.prismarine.item.ItemStack;
 
 import java.io.IOException;
@@ -34,6 +35,7 @@ import java.nio.channels.GatheringByteChannel;
 import java.nio.channels.ScatteringByteChannel;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
+import java.util.UUID;
 
 /**
  * An extension to netty's ByteBuf to support
@@ -53,6 +55,50 @@ public class MCByteBuf extends ByteBuf {
         this.buf = buf;
     }
 
+    /**
+     * Reads a UUID from the ByteBuf
+     *
+     * @return the read UUID
+     */
+    public UUID readUUID() {
+        return new UUID(readLong(), readLong());
+    }
+
+    /**
+     * Writes a UUID to the ByteBUf
+     *
+     * @param uuid
+     *         the UUId to write
+     */
+    public void writeUUID(UUID uuid) {
+        writeLong(uuid.getMostSignificantBits());
+        writeLong(uuid.getLeastSignificantBits());
+    }
+
+    /**
+     * Reads a position from the ByteBuf
+     *
+     * @return the read position
+     */
+    public Position readPosition() {
+        return Position.fromLong(readLong());
+    }
+
+    /**
+     * Writes a position to the ByteBuf
+     *
+     * @param position
+     *         the position to write
+     */
+    public void writePosition(Position position) {
+        writeLong(position.toLong());
+    }
+
+    /**
+     * Reads an ItemStack from the ByteBuf
+     *
+     * @return the read item stack or null
+     */
     public ItemStack readItemStack() {
         int id = readShort();
         if (id == -1) {
@@ -70,6 +116,12 @@ public class MCByteBuf extends ByteBuf {
         );
     }
 
+    /**
+     * Writes an ItemStack to the ByteBuf
+     *
+     * @param itemStack
+     *         the item stack to write
+     */
     public void writeItemStack(ItemStack itemStack) {
         if (itemStack == null) {
             writeShort(-1);
@@ -82,14 +134,22 @@ public class MCByteBuf extends ByteBuf {
         writeNBTCompound(); // TODO
     }
 
-    private void readNBTCompound() {
+    /**
+     * Reads an NBT Compound from the ByteBuf
+     * (NYI)
+     */
+    public void readNBTCompound() {
         int length = readShort(); // NYI
         if (length != -1) {
             throw new UnsupportedOperationException();
         }
     }
 
-    private void writeNBTCompound() {
+    /**
+     * Writes an NBT Compound to the ByteBuf
+     * (NYI)
+     */
+    public void writeNBTCompound() {
         writeShort(-1);
         // NYI
     }
