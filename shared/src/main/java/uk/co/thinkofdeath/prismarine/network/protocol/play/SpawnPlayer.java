@@ -17,6 +17,7 @@
 package uk.co.thinkofdeath.prismarine.network.protocol.play;
 
 import uk.co.thinkofdeath.prismarine.Prismarine;
+import uk.co.thinkofdeath.prismarine.entity.metadata.EntityMetadata;
 import uk.co.thinkofdeath.prismarine.item.Item;
 import uk.co.thinkofdeath.prismarine.network.MCByteBuf;
 import uk.co.thinkofdeath.prismarine.network.protocol.IPlayHandlerClientbound;
@@ -34,14 +35,14 @@ public class SpawnPlayer implements Packet<IPlayHandlerClientbound> {
     private byte yaw;
     private byte pitch;
     private Item currentItem;
-    // TODO: Metadata
+    private EntityMetadata metadata;
 
     public SpawnPlayer() {
     }
 
     public SpawnPlayer(int entityId, UUID uuid,
                        int x, int y, int z, byte yaw, byte pitch,
-                       Item currentItem) {
+                       Item currentItem, EntityMetadata metadata) {
         this.entityId = entityId;
         this.uuid = uuid;
         this.x = x;
@@ -50,6 +51,7 @@ public class SpawnPlayer implements Packet<IPlayHandlerClientbound> {
         this.yaw = yaw;
         this.pitch = pitch;
         this.currentItem = currentItem;
+        this.metadata = metadata;
     }
 
     @Override
@@ -65,8 +67,8 @@ public class SpawnPlayer implements Packet<IPlayHandlerClientbound> {
         if (item != 0) {
             currentItem = Prismarine.getInstance().getItemRegistry().get(item);
         }
-        // TODO: Metadata
-        throw new UnsupportedOperationException("Read Spawn player");
+        metadata = new EntityMetadata();
+        metadata.read(buf);
     }
 
     @Override
@@ -83,10 +85,7 @@ public class SpawnPlayer implements Packet<IPlayHandlerClientbound> {
         } else {
             buf.writeShort(Prismarine.getInstance().getItemRegistry().getId(currentItem));
         }
-        // TODO: Metadata
-        buf.writeBytes(new byte[]{
-                0, 0, 127
-        });
+        metadata.write(buf);
     }
 
     @Override

@@ -16,5 +16,9 @@
 
 package uk.co.thinkofdeath.prismarine.entity;
 
+import uk.co.thinkofdeath.prismarine.entity.metadata.MetaKey;
+
 public class Entity {
+
+    public static MetaKey<Byte> ENTITY_FLAGS = MetaKey.define(0, (byte) 0);
 }
