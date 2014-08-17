@@ -16,5 +16,36 @@
 
 package uk.co.thinkofdeath.prismarine;
 
+import uk.co.thinkofdeath.prismarine.block.BlockRegistry;
+import uk.co.thinkofdeath.prismarine.item.ItemRegistry;
+
 public abstract class Prismarine {
+
+    private static Prismarine instance;
+
+    private final BlockRegistry blockRegistry = new BlockRegistry();
+    private final ItemRegistry itemRegistry = new ItemRegistry();
+
+    protected Prismarine() {
+        if (instance != null) {
+            throw new RuntimeException("Only a single Prismarine instance can exist");
+        }
+        instance = this;
+    }
+
+    protected void init() {
+
+    }
+
+    public BlockRegistry getBlockRegistry() {
+        return blockRegistry;
+    }
+
+    public ItemRegistry getItemRegistry() {
+        return itemRegistry;
+    }
+
+    public static Prismarine getInstance() {
+        return instance;
+    }
 }

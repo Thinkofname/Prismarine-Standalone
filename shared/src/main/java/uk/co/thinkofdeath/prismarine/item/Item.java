@@ -14,20 +14,7 @@
  * limitations under the License.
  */
 
-package uk.co.thinkofdeath.prismarine.network.protocol;
+package uk.co.thinkofdeath.prismarine.item;
 
-import uk.co.thinkofdeath.prismarine.network.protocol.play.*;
-
-public interface IPlayHandlerClientbound extends PacketHandler {
-    void handle(JoinGame joinGame);
-
-    void handle(KeepAlivePing keepAlivePing);
-
-    void handle(PlayerTeleport playerTeleport);
-
-    void handle(ServerMessage serverMessage);
-
-    void handle(TimeUpdate timeUpdate);
-
-    void handle(EntityEquipment entityEquipment);
+public class Item {
 }

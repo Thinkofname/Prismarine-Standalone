@@ -20,8 +20,10 @@ import io.netty.buffer.ByteBuf;
 import io.netty.buffer.ByteBufAllocator;
 import io.netty.buffer.ByteBufProcessor;
 import io.netty.handler.codec.DecoderException;
+import uk.co.thinkofdeath.prismarine.Prismarine;
 import uk.co.thinkofdeath.prismarine.chat.ChatSerializer;
 import uk.co.thinkofdeath.prismarine.chat.Component;
+import uk.co.thinkofdeath.prismarine.item.ItemStack;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -49,6 +51,47 @@ public class MCByteBuf extends ByteBuf {
      */
     public MCByteBuf(ByteBuf buf) {
         this.buf = buf;
+    }
+
+    public ItemStack readItemStack() {
+        int id = readShort();
+        if (id == -1) {
+            return null;
+        }
+        int count = readByte();
+        int damage = readShort();
+
+        readNBTCompound(); // TODO
+
+        return new ItemStack(
+                Prismarine.getInstance().getItemRegistry().get(id),
+                count,
+                damage
+        );
+    }
+
+    public void writeItemStack(ItemStack itemStack) {
+        if (itemStack == null) {
+            writeShort(-1);
+            return;
+        }
+        writeShort(Prismarine.getInstance().getItemRegistry().getId(itemStack.getItem()));
+        writeByte(itemStack.getCount());
+        writeShort(itemStack.getDamage());
+
+        writeNBTCompound(); // TODO
+    }
+
+    private void readNBTCompound() {
+        int length = readShort(); // NYI
+        if (length != -1) {
+            throw new UnsupportedOperationException();
+        }
+    }
+
+    private void writeNBTCompound() {
+        writeShort(-1);
+        // NYI
     }
 
     /**

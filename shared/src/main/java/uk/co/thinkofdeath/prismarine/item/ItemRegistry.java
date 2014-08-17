@@ -14,20 +14,18 @@
  * limitations under the License.
  */
 
-package uk.co.thinkofdeath.prismarine.network.protocol;
+package uk.co.thinkofdeath.prismarine.item;
 
-import uk.co.thinkofdeath.prismarine.network.protocol.play.*;
+import uk.co.thinkofdeath.prismarine.registry.Registry;
 
-public interface IPlayHandlerClientbound extends PacketHandler {
-    void handle(JoinGame joinGame);
+import java.util.HashMap;
+import java.util.Map;
 
-    void handle(KeepAlivePing keepAlivePing);
+public class ItemRegistry extends Registry<Item> {
 
-    void handle(PlayerTeleport playerTeleport);
+    private Map<String, Item> nameMap = new HashMap<>();
 
-    void handle(ServerMessage serverMessage);
+    public ItemRegistry() {
 
-    void handle(TimeUpdate timeUpdate);
-
-    void handle(EntityEquipment entityEquipment);
+    }
 }

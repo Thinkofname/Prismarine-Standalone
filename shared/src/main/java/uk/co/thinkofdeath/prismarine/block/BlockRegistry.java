@@ -14,20 +14,13 @@
  * limitations under the License.
  */
 
-package uk.co.thinkofdeath.prismarine.network.protocol;
+package uk.co.thinkofdeath.prismarine.block;
 
-import uk.co.thinkofdeath.prismarine.network.protocol.play.*;
+import uk.co.thinkofdeath.prismarine.registry.Registry;
 
-public interface IPlayHandlerClientbound extends PacketHandler {
-    void handle(JoinGame joinGame);
+public class BlockRegistry extends Registry<Block> {
 
-    void handle(KeepAlivePing keepAlivePing);
-
-    void handle(PlayerTeleport playerTeleport);
-
-    void handle(ServerMessage serverMessage);
-
-    void handle(TimeUpdate timeUpdate);
-
-    void handle(EntityEquipment entityEquipment);
+    public BlockRegistry() {
+        super();
+    }
 }

@@ -23,6 +23,7 @@ import io.netty.channel.ChannelOption;
 import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
+import uk.co.thinkofdeath.prismarine.Prismarine;
 import uk.co.thinkofdeath.prismarine.log.LogUtil;
 import uk.co.thinkofdeath.prismarine.network.protocol.PacketHandler;
 import uk.co.thinkofdeath.prismarine.network.protocol.ProtocolDirection;
@@ -41,6 +42,7 @@ import java.util.logging.Logger;
 public class NetworkManager {
 
     private static final Logger logger = LogUtil.get(NetworkManager.class);
+    private final Prismarine prismarine;
     private Channel channel;
 
     private boolean onlineMode = true;
@@ -49,8 +51,12 @@ public class NetworkManager {
 
     /**
      * Creates a new Network Manager
+     *
+     * @param prismarine
+     *         the prismarine instance
      */
-    public NetworkManager() {
+    public NetworkManager(Prismarine prismarine) {
+        this.prismarine = prismarine;
     }
 
     /**
@@ -144,5 +150,9 @@ public class NetworkManager {
      */
     public ProtocolDirection getIncomingPacketType() {
         return incomingPacketType;
+    }
+
+    public Prismarine getPrismarine() {
+        return prismarine;
     }
 }

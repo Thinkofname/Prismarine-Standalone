@@ -32,6 +32,7 @@ public class PrismarineServer extends Prismarine {
     public PrismarineServer(Configuration config) {
         this.config = config;
         logger.info("Starting Prismarine");
+        init();
     }
 
     public void start() {
