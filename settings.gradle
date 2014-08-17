@@ -18,7 +18,5 @@ rootProject.name = 'Prismarine'
 
 include 'shared'
 include 'server'
-include 'network'
-
 include 'client'
 
