@@ -26,6 +26,7 @@ import uk.co.thinkofdeath.prismarine.log.LogUtil;
 import uk.co.thinkofdeath.prismarine.network.protocol.Packet;
 import uk.co.thinkofdeath.prismarine.network.protocol.PacketHandler;
 import uk.co.thinkofdeath.prismarine.network.protocol.Protocol;
+import uk.co.thinkofdeath.prismarine.network.protocol.ProtocolDirection;
 import uk.co.thinkofdeath.prismarine.network.protocol.login.LoginDisconnect;
 import uk.co.thinkofdeath.prismarine.network.protocol.login.SetInitialCompression;
 
@@ -82,30 +83,45 @@ public class NetworkHandler extends SimpleChannelInboundHandler<Packet> {
     }
 
     public void enableCompression(int threshold) {
-        if (channel.pipeline().get(PacketCodec.class).getProtocol() == Protocol.LOGIN) {
-            sendPacket(new SetInitialCompression(threshold));
-        } else if (channel.pipeline().get(PacketCodec.class).getProtocol() == Protocol.PLAY) {
-            // TODO
-        } else {
-            throw new UnsupportedOperationException();
+        if (manager.getIncomingPacketType() == ProtocolDirection.SERVERBOUND) {
+            // Only servers can change the threshold for others
+            if (channel.pipeline().get(PacketCodec.class).getProtocol() == Protocol.LOGIN) {
+                sendPacket(new SetInitialCompression(threshold));
+            } else if (channel.pipeline().get(PacketCodec.class).getProtocol() == Protocol.PLAY) {
+                // TODO
+            } else {
+                throw new UnsupportedOperationException();
+            }
         }
 
         CompressionCodec codec = channel.pipeline().get(CompressionCodec.class);
-        if (codec == null) {
-            codec = new CompressionCodec();
-            channel.pipeline().addAfter("frame-codec", "compression-codec", codec);
+        if (threshold != -1) {
+            if (codec == null) {
+                codec = new CompressionCodec();
+                channel.pipeline().addAfter("frame-codec", "compression-codec", codec);
+            }
+            codec.setThreshold(threshold);
+        } else {
+            if (channel.pipeline().get(CompressionCodec.class) != null) {
+                channel.pipeline().remove(CompressionCodec.class);
+            }
         }
-        codec.setThreshold(threshold);
     }
 
     public void disconnect(Component reason) {
         logger.info("Disconnected(" + channel.remoteAddress() + "): " + reason.asString());
         Packet packet;
-        if (channel.pipeline().get(PacketCodec.class).getProtocol() == Protocol.LOGIN) {
-            packet = new LoginDisconnect(reason);
-            channel.write(packet)
-                    .addListener(ChannelFutureListener.CLOSE);
+
+        if (manager.getIncomingPacketType() == ProtocolDirection.SERVERBOUND) {
+            if (channel.pipeline().get(PacketCodec.class).getProtocol() == Protocol.LOGIN) {
+                packet = new LoginDisconnect(reason);
+                channel.write(packet)
+                        .addListener(ChannelFutureListener.CLOSE);
+            } else {
+                channel.close();
+            }
         } else {
+            // Client doesn't send a disconnect message
             channel.close();
         }
         connected = false;
