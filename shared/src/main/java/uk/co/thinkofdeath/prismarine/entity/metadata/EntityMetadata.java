@@ -42,8 +42,10 @@ public class EntityMetadata {
 
     public <T> void update(MetaKey<T> key, T value) {
         MetaEntry entry = map.get(key.getId());
-        entry.value = value;
-        entry.dirty = true;
+        if (entry.value == null || !entry.equals(value)) {
+            entry.value = value;
+            entry.dirty = true;
+        }
     }
 
     @SuppressWarnings("unchecked")

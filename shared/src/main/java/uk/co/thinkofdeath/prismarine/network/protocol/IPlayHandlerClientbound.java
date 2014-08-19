@@ -50,4 +50,36 @@ public interface IPlayHandlerClientbound extends PacketHandler {
     void handle(SpawnObject spawnObject);
 
     void handle(SpawnLivingEntity spawnLivingEntity);
+
+    void handle(SpawnPainting spawnPainting);
+
+    void handle(SpawnExperienceOrb spawnExperienceOrb);
+
+    void handle(EntityVelocity entityVelocity);
+
+    void handle(DestroyEntities destroyEntities);
+
+    void handle(Entity entity);
+
+    void handle(EntityMove entityMove);
+
+    void handle(EntityLook entityLook);
+
+    void handle(EntityMoveLook entityMoveLook);
+
+    void handle(EntityTeleport entityTeleport);
+
+    void handle(EntityHeadLook entityHeadLook);
+
+    void handle(EntityStatus entityStatus);
+
+    void handle(EntityAttach entityAttach);
+
+    void handle(EntitySetMetadata entitySetMetadata);
+
+    void handle(EntityEffect entityEffect);
+
+    void handle(EntityRemoveEffect entityRemoveEffect);
+
+    void handle(SetExperience setExperience);
 }

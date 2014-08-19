@@ -51,6 +51,22 @@ public enum Protocol {
         addPacket(ProtocolDirection.CLIENTBOUND, CollectItem.class);
         addPacket(ProtocolDirection.CLIENTBOUND, SpawnObject.class);
         addPacket(ProtocolDirection.CLIENTBOUND, SpawnLivingEntity.class);
+        addPacket(ProtocolDirection.CLIENTBOUND, SpawnPainting.class);
+        addPacket(ProtocolDirection.CLIENTBOUND, SpawnExperienceOrb.class);
+        addPacket(ProtocolDirection.CLIENTBOUND, EntityVelocity.class);
+        addPacket(ProtocolDirection.CLIENTBOUND, DestroyEntities.class);
+        addPacket(ProtocolDirection.CLIENTBOUND, Entity.class);
+        addPacket(ProtocolDirection.CLIENTBOUND, EntityMove.class);
+        addPacket(ProtocolDirection.CLIENTBOUND, EntityLook.class);
+        addPacket(ProtocolDirection.CLIENTBOUND, EntityMoveLook.class);
+        addPacket(ProtocolDirection.CLIENTBOUND, EntityTeleport.class);
+        addPacket(ProtocolDirection.CLIENTBOUND, EntityHeadLook.class);
+        addPacket(ProtocolDirection.CLIENTBOUND, EntityStatus.class);
+        addPacket(ProtocolDirection.CLIENTBOUND, EntityAttach.class);
+        addPacket(ProtocolDirection.CLIENTBOUND, EntitySetMetadata.class);
+        addPacket(ProtocolDirection.CLIENTBOUND, EntityEffect.class);
+        addPacket(ProtocolDirection.CLIENTBOUND, EntityRemoveEffect.class);
+        addPacket(ProtocolDirection.CLIENTBOUND, SetExperience.class);
     }},
     STATUS(1) {{
         addPacket(ProtocolDirection.SERVERBOUND, StatusRequest.class);
