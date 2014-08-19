@@ -118,16 +118,6 @@ public enum Protocol {
         }
     }
 
-    // Exists until all packets are implemented
-    @Deprecated
-    protected void skip(ProtocolDirection direction, int count) {
-        if (direction == ProtocolDirection.CLIENTBOUND) {
-            nextClientboundId += count;
-        } else {
-            nextServerboundId += count;
-        }
-    }
-
     public int getId() {
         return id;
     }

@@ -23,9 +23,9 @@ public class Constants {
     /**
      * The currently supported Minecraft version
      */
-    public static final String MINECRAFT_VERSION = "14w33c";
+    public static final String MINECRAFT_VERSION = "14w34b";
     /**
      * The currently supported protocol version
      */
-    public static final int PROTOCOL_VERSION = 39;
+    public static final int PROTOCOL_VERSION = 41;
 }
