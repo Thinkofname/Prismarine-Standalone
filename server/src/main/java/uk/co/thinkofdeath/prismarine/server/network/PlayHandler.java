@@ -17,6 +17,7 @@
 package uk.co.thinkofdeath.prismarine.server.network;
 
 import io.netty.util.concurrent.ScheduledFuture;
+import uk.co.thinkofdeath.prismarine.chat.Color;
 import uk.co.thinkofdeath.prismarine.chat.TextComponent;
 import uk.co.thinkofdeath.prismarine.game.Difficulty;
 import uk.co.thinkofdeath.prismarine.game.Dimension;
@@ -25,10 +26,7 @@ import uk.co.thinkofdeath.prismarine.log.LogUtil;
 import uk.co.thinkofdeath.prismarine.network.NetworkHandler;
 import uk.co.thinkofdeath.prismarine.network.login.Property;
 import uk.co.thinkofdeath.prismarine.network.protocol.IPlayHandlerServerbound;
-import uk.co.thinkofdeath.prismarine.network.protocol.play.JoinGame;
-import uk.co.thinkofdeath.prismarine.network.protocol.play.KeepAlivePing;
-import uk.co.thinkofdeath.prismarine.network.protocol.play.KeepAlivePong;
-import uk.co.thinkofdeath.prismarine.network.protocol.play.PlayerTeleport;
+import uk.co.thinkofdeath.prismarine.network.protocol.play.*;
 
 import java.util.Random;
 import java.util.UUID;
@@ -59,6 +57,20 @@ public class PlayHandler implements IPlayHandlerServerbound {
             handler.disconnect(new TextComponent("Incorrect Keep Alive"));
         }
         lastPingId = -1;
+    }
+
+    @Override
+    public void handle(ChatMessage chatMessage) {
+        TextComponent component = new TextComponent("<");
+        TextComponent user = new TextComponent(username);
+        user.setColor(Color.AQUA);
+        component.addComponent(user);
+        component.addComponent(new TextComponent("> "));
+        component.addComponent(new TextComponent(chatMessage.getMessage()));
+        handler.sendPacket(new ServerMessage(
+                component,
+                ServerMessage.Type.CHAT
+        ));
     }
 
     @Override

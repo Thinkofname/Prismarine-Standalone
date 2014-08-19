@@ -98,6 +98,7 @@ public abstract class Component implements Stringable {
                 || italic != null
                 || underlined != null
                 || strikethrough != null
-                || obfuscated != null;
+                || obfuscated != null
+                || (subComponents != null && !subComponents.isEmpty());
     }
 }

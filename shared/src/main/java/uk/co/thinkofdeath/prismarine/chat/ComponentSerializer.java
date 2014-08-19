@@ -95,9 +95,11 @@ class ComponentSerializer implements JsonSerializer<Component>, JsonDeserializer
             jsonObject.addProperty("color", component.color.toString().toLowerCase());
         }
         if (component.subComponents != null) {
-            Component[] com = new Component[component.subComponents.size()];
-            com = component.subComponents.toArray(com);
-            jsonObject.add("extra", jsonSerializationContext.serialize(com, Component[].class));
+            JsonArray array = new JsonArray();
+            for (Component c : component.subComponents) {
+                array.add(jsonSerializationContext.serialize(c, Component.class));
+            }
+            jsonObject.add("extra", array);
         }
         return jsonObject;
     }
