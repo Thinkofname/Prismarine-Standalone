@@ -60,7 +60,7 @@ public class NetworkManager {
     }
 
     /**
-     * Start listening on the specified address & port. The initial handler for
+     * Start listening on the specified address &amp; port. The initial handler for
      * each connection will be created from the supplier
      *
      * @param address
